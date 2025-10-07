@@ -1,226 +1,328 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Página</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Página Personal</title>
   <style>
+    /* ====== RESET ====== */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
       line-height: 1.6;
-      background-color: #fff;
-      color: #000;
-      transition: background-color 0.4s, color 0.4s;
+      overflow-x: hidden;
+      transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1), color 0.8s ease;
     }
 
-    body.dark-mode {
-      background-color: #111;
-      color: #fff;
-    }
-
+    /* ====== HEADER ====== */
     header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 15px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      backdrop-filter: blur(12px);
-      background: rgba(255, 255, 255, 0.4);
-      color: #000;
-      z-index: 1000;
-      transition: background 0.3s;
+      padding: 20px 10%;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      transition: background-color 0.6s ease;
     }
 
-    body.dark-mode header {
-      background: rgba(0, 0, 0, 0.4);
-      color: #fff;
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
     }
 
     nav a {
-      text-decoration: none;
       color: inherit;
-      margin-left: 20px;
+      margin-left: 25px;
+      text-decoration: none;
       font-weight: 500;
+      position: relative;
     }
 
-    nav a:hover {
-      opacity: 0.7;
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: currentColor;
+      transition: width 0.3s ease;
     }
 
-    section {
-      padding: 100px 10%;
-      text-align: center;
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* ====== DARK MODE TOGGLE ====== */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 28px;
+    }
+
+    .switch input {
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease-out;
+      width: 0;
+      height: 0;
     }
 
-    section.show {
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: background-color 0.5s ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: transform 0.5s ease;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #007aff;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
+    .slider::after {
+      content: "🌙";
+      position: absolute;
+      right: 6px;
+      top: 3px;
+      font-size: 15px;
+    }
+
+    input:checked + .slider::after {
+      content: "☀️";
+    }
+
+    /* ====== SECTIONS ====== */
+    section {
+      min-height: 100vh;
+      padding: 140px 10%;
+      opacity: 0;
+      transform: translateY(80px) scale(0.98);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    section.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
-    h1 {
-      font-size: 2.3rem;
-      letter-spacing: 1px;
-    }
-
-    h2 {
+    section h2 {
       font-size: 2.2rem;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
-    p {
-      max-width: 600px;
-      margin: 0 auto 25px;
+    section p {
+      max-width: 700px;
       font-size: 1.1rem;
+      opacity: 0.9;
     }
 
+    /* ====== BUTTON STYLE ====== */
     .btn {
       display: inline-block;
-      background: #000;
-      color: #fff;
-      padding: 10px 25px;
-      border-radius: 25px;
+      margin-top: 30px;
+      padding: 12px 32px;
+      border: 1px solid currentColor;
+      border-radius: 50px;
       text-decoration: none;
-      transition: background 0.3s;
+      color: inherit;
+      font-weight: 500;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .btn:hover {
-      background: #333;
+      background-color: currentColor;
+      color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
 
-    body.dark-mode .btn {
-      background: #fff;
-      color: #000;
+    /* ====== DARK MODE ====== */
+    body.dark-mode {
+      background-color: #000000;
+      color: #ffffff;
     }
 
-    body.dark-mode .btn:hover {
-      background: #ccc;
+    body.dark-mode header {
+      background-color: rgba(0, 0, 0, 0.6);
     }
 
-    footer {
+    /* ====== GAME STYLES ====== */
+    #gameCanvas {
+      background-color: #e3e3e3;
+      border-radius: 12px;
+      display: block;
+      margin: 30px auto;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    body.dark-mode #gameCanvas {
+      background-color: #222;
+    }
+
+    #score {
       text-align: center;
-      padding: 25px;
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
-
-    /* Toggle */
-    .toggle-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .toggle-label {
-      font-size: 0.9rem;
-    }
-
-    input[type="checkbox"] {
-      width: 40px;
-      height: 20px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-      }
-
-      nav a {
-        margin-left: 15px;
-        font-size: 0.95rem;
-      }
-
-      section h2 {
-        font-size: 1.8rem;
-      }
-
-      section p {
-        font-size: 1rem;
-      }
+      font-size: 1.4rem;
+      margin-top: 10px;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
+  <!-- HEADER -->
   <header>
-    <h1>Mi Página</h1>
+    <h1>Mi Página Personal</h1>
     <nav>
       <a href="#inicio">Inicio</a>
       <a href="#sobre-mi">Sobre mí</a>
       <a href="#proyectos">Proyectos</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#juego">Juego</a>
       <a href="#referencias">Referencias</a>
     </nav>
-    <div class="toggle-container">
-      <span class="toggle-label">🌞</span>
-      <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-      <span class="toggle-label">🌙</span>
+    <div class="switch">
+      <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
+      <label for="darkModeToggle" class="slider"></label>
     </div>
   </header>
 
+  <!-- SECTIONS -->
   <section id="inicio">
-    <h2>Bienvenidos</h2>
-    <p>Hola, soy Othniel. Esta es mi página. Me gusta el baloncesto y la tecnología. Gracias por visitar.</p>
-    <a href="#sobre-mi" class="btn">Leer más</a>
+    <h2>Bienvenido</h2>
+    <p>Hola, soy Othniel Yeboah. Esta es mi página personal. Aquí practico español, diseño y programación. Me gusta el baloncesto y la tecnología.</p>
+    <a href="#sobre-mi" class="btn">Saber más</a>
   </section>
 
   <section id="sobre-mi">
     <h2>Sobre mí</h2>
-    <p>Soy un estudiante. Me gusta aprender, trabajar y hacer cosas nuevas. Me gusta hacer proyectos con cuidado y con estilo.</p>
-    <a href="#proyectos" class="btn">Ver proyectos</a>
+    <p>Soy estudiante y jugador de baloncesto. Me gusta aprender cosas nuevas y trabajar en proyectos que me ayudan a mejorar cada día.</p>
   </section>
 
   <section id="proyectos">
-    <h2>Mis proyectos</h2>
-    <p>He trabajado en algunos proyectos simples. Me gusta crear cosas que se ven bien y funcionan bien.</p>
-    <a href="#contacto" class="btn">Contáctame</a>
+    <h2>Mis Proyectos</h2>
+    <p>En esta página muestro mis ideas. Hago sitios web y juegos para aprender sobre código y diseño.</p>
   </section>
 
-  <section id="contacto">
-    <h2>Contacto</h2>
-    <p>Puedes escribirme si tienes una idea o quieres hablar. Estoy feliz de escuchar.</p>
-    <a href="mailto:othniel@example.com" class="btn">Enviar correo</a>
+  <!-- 🎮 GAME SECTION -->
+  <section id="juego">
+    <h2>Juego de Tiro</h2>
+    <p>Haz clic o toca para lanzar el balón. Si tu tiempo es bueno, ¡anotarás!</p>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="score">Puntuación: 0</div>
   </section>
 
+  <!-- 📚 REFERENCIAS -->
   <section id="referencias">
     <h2>Referencias</h2>
-    <p>Aquí están las páginas que usé para mis palabras y frases.</p>
-    <a href="https://www.spanishdict.com/" target="_blank" class="btn">Ver referencias</a>
+    <p>Aquí están las fuentes que uso para aprender español y hacer esta página.</p>
+    <a href="https://www.spanishdict.com/" target="_blank" class="btn">Visitar sitio</a>
   </section>
 
-  <footer>
-    <p>&copy; 2025 Othniel Yeboah</p>
-  </footer>
-
+  <!-- JAVASCRIPT -->
   <script>
+    // 🌗 Toggle Dark Mode
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
-      localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
     }
 
-    if (localStorage.getItem("darkMode") === "true") {
-      document.body.classList.add("dark-mode");
-      document.getElementById("darkModeToggle").checked = true;
-    }
-
+    // 🕊️ Smooth Section Fade-in
     const sections = document.querySelectorAll("section");
-    window.addEventListener("scroll", () => {
-      const trigger = window.innerHeight * 0.85;
-      sections.forEach(sec => {
-        const top = sec.getBoundingClientRect().top;
-        if (top < trigger) sec.classList.add("show");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
       });
-    });
+    }, { threshold: 0.2 });
+    sections.forEach(section => observer.observe(section));
+
+    // 🏀 Simple Basketball Shot Game
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const scoreDisplay = document.getElementById("score");
+
+    let power = 0;
+    let direction = 1;
+    let score = 0;
+    const sweetSpot = { min: 70, max: 90 };
+
+    function drawPowerBar() {
+      ctx.fillStyle = "#ccc";
+      ctx.fillRect(50, 350, 300, 20);
+
+      ctx.fillStyle = "#007aff";
+      ctx.fillRect(50, 350, (power / 100) * 300, 20);
+
+      ctx.fillStyle = "#00b300";
+      const sweetX = 50 + (sweetSpot.min / 100) * 300;
+      const sweetWidth = ((sweetSpot.max - sweetSpot.min) / 100) * 300;
+      ctx.fillRect(sweetX, 350, sweetWidth, 20);
+    }
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(200, 300, 20, 0, Math.PI * 2);
+      ctx.fillStyle = "#ff6600";
+      ctx.fill();
+    }
+
+    function updatePower() {
+      power += direction * 1.5;
+      if (power >= 100 || power <= 0) direction *= -1;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+      drawPowerBar();
+      updatePower();
+      requestAnimationFrame(draw);
+    }
+
+    function shoot() {
+      if (power >= sweetSpot.min && power <= sweetSpot.max) {
+        score++;
+        alert("¡Canasta! 🏀");
+      } else {
+        score = Math.max(0, score - 1);
+        alert("Fallaste 💨");
+      }
+      scoreDisplay.textContent = "Puntuación: " + score;
+    }
+
+    canvas.addEventListener("click", shoot);
+    draw();
   </script>
 </body>
 </html>
