@@ -44,6 +44,11 @@
       font-size: 1.4rem;
       letter-spacing: 1px;
       font-weight: 600;
+      transition: opacity 0.3s ease;
+    }
+
+    header h1:hover {
+      opacity: 0.8;
     }
 
     nav a {
@@ -136,7 +141,7 @@
       padding: 140px 10%;
       opacity: 0;
       transform: translateY(80px) scale(0.98);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
                   transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -187,15 +192,24 @@
       background-color: rgba(0, 0, 0, 0.6);
     }
 
-    /* ====== SMOOTH SCROLL FADE ====== */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(80px) scale(0.98);
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 10px 5%;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+
+      nav a {
+        margin-left: 15px;
+        font-size: 0.95rem;
+      }
+
+      section h2 {
+        font-size: 2rem;
+      }
+
+      section p {
+        font-size: 1rem;
       }
     }
 
@@ -210,6 +224,7 @@
       <a href="#sobre-mi">Sobre mí</a>
       <a href="#proyectos">Proyectos</a>
       <a href="#contacto">Contacto</a>
+      <a href="#referencias">Referencias</a>
     </nav>
 
     <div class="switch">
@@ -227,7 +242,7 @@
 
   <section id="sobre-mi">
     <h2>Sobre mí</h2>
-    <p>Soy un estudiante apasionado por baloncesto y la tecnología. Me gusta hacer proyectos que esta bien y trabajando.</p>
+    <p>Soy un estudiante apasionado por el baloncesto y la tecnología. Me gusta trabajar en proyectos bien hechos y creativos.</p>
   </section>
 
   <section id="proyectos">
@@ -241,14 +256,27 @@
     <a href="#inicio" class="btn">Volver arriba</a>
   </section>
 
+  <section id="referencias">
+    <h2>Referencias</h2>
+    <p>Aquí puedes encontrar las fuentes y referencias que utilicé para crear el contenido de esta página.</p>
+    <a href="https://www.spanishdict.com/" target="_blank" class="btn">Visitar mis referencias</a>
+  </section>
+
   <!-- JAVASCRIPT -->
   <script>
-    // 🌗 Toggle Dark Mode
+    // 🌗 Toggle Dark Mode with Save
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
+      localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
     }
 
-    // 🕊️ Smooth Section Fade-in on Scroll (Apple-style)
+    // Keep dark mode setting after reload
+    if (localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark-mode");
+      document.getElementById("darkModeToggle").checked = true;
+    }
+
+    // 🕊️ Smooth Section Fade-in on Scroll
     const sections = document.querySelectorAll("section");
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
