@@ -1,328 +1,297 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Página Personal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego de Baloncesto | Othniel Yeboah</title>
   <style>
-    /* ====== RESET ====== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
+    :root {
+      --bg-light: #f5f5f7;
+      --bg-dark: #1c1c1e;
+      --text-light: #1d1d1f;
+      --text-dark: #f5f5f7;
+      --card-light: #ffffff;
+      --card-dark: #2c2c2e;
+      --accent: #0078d7;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #ffffff;
-      color: #000000;
-      line-height: 1.6;
-      overflow-x: hidden;
-      transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1), color 0.8s ease;
-    }
-
-    /* ====== HEADER ====== */
-    header {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.5s ease, color 0.5s ease;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      padding: 20px 10%;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      transition: background-color 0.6s ease;
-    }
-
-    header h1 {
-      font-size: 1.4rem;
-      font-weight: 600;
-    }
-
-    nav a {
-      color: inherit;
-      margin-left: 25px;
-      text-decoration: none;
-      font-weight: 500;
-      position: relative;
-    }
-
-    nav a::after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 2px;
-      left: 0;
-      bottom: -4px;
-      background-color: currentColor;
-      transition: width 0.3s ease;
-    }
-
-    nav a:hover::after {
-      width: 100%;
-    }
-
-    /* ====== DARK MODE TOGGLE ====== */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 52px;
-      height: 28px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      border-radius: 34px;
-      transition: background-color 0.5s ease;
-    }
-
-    .slider::before {
-      content: "";
-      position: absolute;
-      height: 22px;
-      width: 22px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: transform 0.5s ease;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: #007aff;
-    }
-
-    input:checked + .slider::before {
-      transform: translateX(24px);
-    }
-
-    .slider::after {
-      content: "🌙";
-      position: absolute;
-      right: 6px;
-      top: 3px;
-      font-size: 15px;
-    }
-
-    input:checked + .slider::after {
-      content: "☀️";
-    }
-
-    /* ====== SECTIONS ====== */
-    section {
       min-height: 100vh;
-      padding: 140px 10%;
-      opacity: 0;
-      transform: translateY(80px) scale(0.98);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      scroll-behavior: smooth;
     }
 
-    section.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
     }
 
-    section h2 {
-      font-size: 2.2rem;
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 30px 0;
+      font-size: 1.8em;
+      font-weight: 600;
+      transition: color 0.5s ease;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
       margin-bottom: 20px;
     }
 
-    section p {
-      max-width: 700px;
-      font-size: 1.1rem;
-      opacity: 0.9;
+    nav button {
+      background-color: var(--accent);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
     }
 
-    /* ====== BUTTON STYLE ====== */
+    nav button:hover {
+      transform: scale(1.05);
+      background-color: #005fa3;
+    }
+
+    #darkModeToggle {
+      background: none;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-size: 14px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    #darkModeToggle:hover {
+      background-color: var(--accent);
+      color: white;
+    }
+
+    .card {
+      background-color: var(--card-light);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.5s ease;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    body.dark .card {
+      background-color: var(--card-dark);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    canvas {
+      width: 100%;
+      height: 400px;
+      background-color: transparent;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9em;
+      opacity: 0.7;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      width: 80%;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
     .btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 32px;
-      border: 1px solid currentColor;
-      border-radius: 50px;
-      text-decoration: none;
-      color: inherit;
-      font-weight: 500;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: var(--accent);
+      border: none;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
     }
 
     .btn:hover {
-      background-color: currentColor;
-      color: #ffffff;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    /* ====== DARK MODE ====== */
-    body.dark-mode {
-      background-color: #000000;
-      color: #ffffff;
-    }
-
-    body.dark-mode header {
-      background-color: rgba(0, 0, 0, 0.6);
-    }
-
-    /* ====== GAME STYLES ====== */
-    #gameCanvas {
-      background-color: #e3e3e3;
-      border-radius: 12px;
-      display: block;
-      margin: 30px auto;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    body.dark-mode #gameCanvas {
-      background-color: #222;
-    }
-
-    #score {
-      text-align: center;
-      font-size: 1.4rem;
-      margin-top: 10px;
-      font-weight: 600;
+      transform: scale(1.05);
+      background-color: #005fa3;
     }
   </style>
 </head>
+
 <body>
-  <!-- HEADER -->
-  <header>
-    <h1>Mi Página Personal</h1>
-    <nav>
-      <a href="#inicio">Inicio</a>
-      <a href="#sobre-mi">Sobre mí</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#juego">Juego</a>
-      <a href="#referencias">Referencias</a>
-    </nav>
-    <div class="switch">
-      <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
-      <label for="darkModeToggle" class="slider"></label>
-    </div>
-  </header>
+  <header>🏀 Juego de Baloncesto</header>
 
-  <!-- SECTIONS -->
-  <section id="inicio">
+  <nav>
+    <button onclick="mostrarSeccion('inicio')">Inicio</button>
+    <button onclick="mostrarSeccion('juego')">Jugar</button>
+    <button onclick="mostrarSeccion('clasificacion')">Clasificación</button>
+    <button id="darkModeToggle">Modo Oscuro</button>
+  </nav>
+
+  <!-- Inicio -->
+  <section id="inicio" class="card">
     <h2>Bienvenido</h2>
-    <p>Hola, soy Othniel Yeboah. Esta es mi página personal. Aquí practico español, diseño y programación. Me gusta el baloncesto y la tecnología.</p>
-    <a href="#sobre-mi" class="btn">Saber más</a>
+    <p>Introduce tu nombre para comenzar:</p>
+    <input type="text" id="nombreUsuario" placeholder="Tu nombre...">
+    <button class="btn" onclick="guardarNombre()">Guardar Nombre</button>
   </section>
 
-  <section id="sobre-mi">
-    <h2>Sobre mí</h2>
-    <p>Soy estudiante y jugador de baloncesto. Me gusta aprender cosas nuevas y trabajar en proyectos que me ayudan a mejorar cada día.</p>
+  <!-- Juego -->
+  <section id="juego" class="card hidden">
+    <h2>Haz clic para lanzar</h2>
+    <p>Puntuación: <span id="puntuacion">0</span> | Tiempo: <span id="tiempo">30</span>s</p>
+    <canvas id="cancha"></canvas>
   </section>
 
-  <section id="proyectos">
-    <h2>Mis Proyectos</h2>
-    <p>En esta página muestro mis ideas. Hago sitios web y juegos para aprender sobre código y diseño.</p>
+  <!-- Clasificación -->
+  <section id="clasificacion" class="card hidden">
+    <h2>Clasificación</h2>
+    <ul id="listaPuntuaciones"></ul>
   </section>
 
-  <!-- 🎮 GAME SECTION -->
-  <section id="juego">
-    <h2>Juego de Tiro</h2>
-    <p>Haz clic o toca para lanzar el balón. Si tu tiempo es bueno, ¡anotarás!</p>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <div id="score">Puntuación: 0</div>
-  </section>
+  <footer>© 2025 Othniel Yeboah | Todos los derechos reservados</footer>
 
-  <!-- 📚 REFERENCIAS -->
-  <section id="referencias">
-    <h2>Referencias</h2>
-    <p>Aquí están las fuentes que uso para aprender español y hacer esta página.</p>
-    <a href="https://www.spanishdict.com/" target="_blank" class="btn">Visitar sitio</a>
-  </section>
-
-  <!-- JAVASCRIPT -->
   <script>
-    // 🌗 Toggle Dark Mode
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
+    // 🌗 Modo Oscuro/Claro
+    const toggle = document.getElementById("darkModeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      toggle.textContent = document.body.classList.contains("dark") ? "Modo Claro" : "Modo Oscuro";
+    });
+
+    // 🔄 Navegación entre secciones
+    function mostrarSeccion(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
     }
 
-    // 🕊️ Smooth Section Fade-in
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("visible");
-      });
-    }, { threshold: 0.2 });
-    sections.forEach(section => observer.observe(section));
-
-    // 🏀 Simple Basketball Shot Game
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const scoreDisplay = document.getElementById("score");
-
-    let power = 0;
-    let direction = 1;
-    let score = 0;
-    const sweetSpot = { min: 70, max: 90 };
-
-    function drawPowerBar() {
-      ctx.fillStyle = "#ccc";
-      ctx.fillRect(50, 350, 300, 20);
-
-      ctx.fillStyle = "#007aff";
-      ctx.fillRect(50, 350, (power / 100) * 300, 20);
-
-      ctx.fillStyle = "#00b300";
-      const sweetX = 50 + (sweetSpot.min / 100) * 300;
-      const sweetWidth = ((sweetSpot.max - sweetSpot.min) / 100) * 300;
-      ctx.fillRect(sweetX, 350, sweetWidth, 20);
-    }
-
-    function drawBall() {
-      ctx.beginPath();
-      ctx.arc(200, 300, 20, 0, Math.PI * 2);
-      ctx.fillStyle = "#ff6600";
-      ctx.fill();
-    }
-
-    function updatePower() {
-      power += direction * 1.5;
-      if (power >= 100 || power <= 0) direction *= -1;
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBall();
-      drawPowerBar();
-      updatePower();
-      requestAnimationFrame(draw);
-    }
-
-    function shoot() {
-      if (power >= sweetSpot.min && power <= sweetSpot.max) {
-        score++;
-        alert("¡Canasta! 🏀");
+    // 💾 Guardar nombre
+    function guardarNombre() {
+      const nombre = document.getElementById("nombreUsuario").value.trim();
+      if (nombre) {
+        localStorage.setItem("usuario", nombre);
+        mostrarSeccion('juego');
+        iniciarJuego();
       } else {
-        score = Math.max(0, score - 1);
-        alert("Fallaste 💨");
+        alert("Por favor, introduce tu nombre.");
       }
-      scoreDisplay.textContent = "Puntuación: " + score;
     }
 
-    canvas.addEventListener("click", shoot);
-    draw();
+    // 🏀 Juego
+    let puntuacion = 0;
+    let tiempo = 30;
+    let intervalo;
+    const canvas = document.getElementById("cancha");
+    const ctx = canvas.getContext("2d");
+    let ballImg = new Image();
+    let hoopImg = new Image();
+    ballImg.src = "./assets/ball.png";
+    hoopImg.src = "./assets/hoop.png";
+
+    function iniciarJuego() {
+      puntuacion = 0;
+      tiempo = 30;
+      document.getElementById("puntuacion").textContent = puntuacion;
+      document.getElementById("tiempo").textContent = tiempo;
+
+      intervalo = setInterval(() => {
+        tiempo--;
+        document.getElementById("tiempo").textContent = tiempo;
+        if (tiempo <= 0) {
+          clearInterval(intervalo);
+          guardarPuntuacion();
+          mostrarSeccion('clasificacion');
+        }
+      }, 1000);
+
+      canvas.addEventListener("click", lanzar);
+      dibujar();
+    }
+
+    let ballY = 350;
+    let ballX = 240;
+    let velY = 0;
+    let lanzando = false;
+
+    function lanzar() {
+      if (!lanzando) {
+        lanzando = true;
+        velY = -8;
+      }
+    }
+
+    function dibujar() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(hoopImg, canvas.width / 2 - 60, 50, 120, 60);
+      ctx.drawImage(ballImg, ballX, ballY, 50, 50);
+
+      if (lanzando) {
+        ballY += velY;
+        velY += 0.4;
+        if (ballY > 350) {
+          ballY = 350;
+          lanzando = false;
+        }
+        if (ballY < 100 && ballX > canvas.width / 2 - 60 && ballX < canvas.width / 2 + 60) {
+          puntuacion++;
+          document.getElementById("puntuacion").textContent = puntuacion;
+        }
+      }
+      requestAnimationFrame(dibujar);
+    }
+
+    // 🧾 Clasificación
+    function guardarPuntuacion() {
+      const usuario = localStorage.getItem("usuario") || "Anónimo";
+      const puntajes = JSON.parse(localStorage.getItem("puntajes") || "[]");
+      puntajes.push({ usuario, puntuacion });
+      puntajes.sort((a, b) => b.puntuacion - a.puntuacion);
+      localStorage.setItem("puntajes", JSON.stringify(puntajes.slice(0, 10)));
+      mostrarClasificacion();
+    }
+
+    function mostrarClasificacion() {
+      const lista = document.getElementById("listaPuntuaciones");
+      lista.innerHTML = "";
+      const puntajes = JSON.parse(localStorage.getItem("puntajes") || "[]");
+      puntajes.forEach(p => {
+        const li = document.createElement("li");
+        li.textContent = `${p.usuario}: ${p.puntuacion} puntos`;
+        lista.appendChild(li);
+      });
+    }
   </script>
 </body>
 </html>
