@@ -1,248 +1,264 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Juego de Baloncesto | Othniel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Página Personal</title>
   <style>
-    :root {
-      --bg-light:#f5f5f7; --bg-dark:#111;
-      --text-light:#111; --text-dark:#f5f5f7;
-      --card-light:#fff; --card-dark:#222;
-      --accent:#0078d7;
+    /* ====== RESET ====== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0;}
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:var(--bg-light); color:var(--text-light);
-      display:flex; flex-direction:column; align-items:center;
-      min-height:100vh; transition:background .4s,color .4s;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1), color 0.8s ease;
     }
-    body.dark{ background:var(--bg-dark); color:var(--text-dark); }
 
-    header{ font-weight:600; font-size:1.25rem; padding:28px 0; }
-
-    nav{ display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; justify-content:center; }
-    nav button{
-      background:var(--accent); color:#fff; border:none; padding:10px 16px; border-radius:10px;
-      cursor:pointer; font-weight:600; transition:.25s;
+    /* ====== HEADER ====== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 10%;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      transition: background-color 0.6s ease;
     }
-    nav button:hover{ transform:translateY(-3px); background:#005fa3; }
 
-    #darkModeToggle {
-      background:transparent; color:var(--accent); border:2px solid var(--accent);
-      padding:8px 12px; border-radius:10px; font-weight:600;
+    header h1 {
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      font-weight: 600;
     }
-    #darkModeToggle:hover{ background:var(--accent); color:#fff; }
 
-    .card {
-      width:92%; max-width:640px; border-radius:18px; padding:26px;
-      background:var(--card-light);
-      box-shadow:0 14px 40px rgba(0,0,0,0.08);
-      transition:background .45s,box-shadow .45s;
-      text-align:center;
+    nav a {
+      color: inherit;
+      margin-left: 25px;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s ease;
     }
-    body.dark .card{ background:var(--card-dark); box-shadow:0 10px 30px rgba(255,255,255,0.05); }
 
-    .hidden{ display:none; }
-
-    input[type="text"] {
-      width:84%; padding:10px; border-radius:10px; border:1px solid #cfcfcf; font-size:14px; margin-top:10px;
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: currentColor;
+      transition: width 0.3s ease;
     }
-    .btn{
-      display:inline-block; margin-top:14px; padding:10px 16px; background:var(--accent); color:#fff;
-      border:none; border-radius:12px; cursor:pointer; font-weight:700; transition:.2s;
+
+    nav a:hover::after {
+      width: 100%;
     }
-    .btn:hover{ transform:translateY(-3px); background:#005fa3; }
 
-    .canvas-wrap{ width:100%; height:420px; display:flex; justify-content:center; align-items:center; margin-top:12px; }
-    canvas { width:100%; max-width:560px; height:100%; border-radius:12px; background:transparent; display:block; }
+    /* ====== DARK MODE TOGGLE ====== */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 28px;
+    }
 
-    ul{ list-style:none; padding:0; text-align:left; margin:12px 0; }
-    li{ padding:8px 0; border-bottom:1px dashed rgba(0,0,0,0.05); }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
 
-    footer{ margin-top:auto; padding:18px 0; opacity:0.7; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: background-color 0.5s ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: transform 0.5s ease;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #007aff;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
+    .slider::after {
+      content: "🌙";
+      position: absolute;
+      right: 6px;
+      top: 3px;
+      font-size: 15px;
+      opacity: 0.8;
+      transition: opacity 0.5s ease;
+    }
+
+    input:checked + .slider::after {
+      content: "☀️";
+    }
+
+    /* ====== SECTIONS ====== */
+    section {
+      min-height: 100vh;
+      padding: 140px 10%;
+      opacity: 0;
+      transform: translateY(80px) scale(0.98);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    section p {
+      max-width: 700px;
+      font-size: 1.15rem;
+      opacity: 0.9;
+    }
+
+    /* ====== BUTTON STYLE ====== */
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 32px;
+      border: 1px solid currentColor;
+      border-radius: 50px;
+      text-decoration: none;
+      color: inherit;
+      font-weight: 500;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:hover {
+      background-color: currentColor;
+      color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    /* ====== DARK MODE ====== */
+    body.dark-mode {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    body.dark-mode header {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* ====== SMOOTH SCROLL FADE ====== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(80px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
   </style>
 </head>
 <body>
-  <header>🏀 Juego de Baloncesto</header>
-  <nav>
-    <button onclick="showSection('inicio')">Inicio</button>
-    <button onclick="showSection('juego')">Jugar</button>
-    <button onclick="showSection('clasificacion')">Clasificación</button>
-    <button id="darkModeToggle">Modo Oscuro</button>
-  </nav>
+  <!-- HEADER -->
+  <header>
+    <h1>Mi Página Personal</h1>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
 
-  <!-- Inicio -->
-  <section id="inicio" class="card">
-    <h2>Bienvenido</h2>
-    <p>Introduce tu nombre y presiona Guardar.</p>
-    <input id="nombreUsuario" type="text" placeholder="Tu nombre..." />
-    <div><button class="btn" onclick="saveNameAndStart()">Guardar</button></div>
-  </section>
-
-  <!-- Juego -->
-  <section id="juego" class="card hidden">
-    <h2>Haz clic o toca para lanzar</h2>
-    <p>Puntuación: <strong id="score">0</strong> • Tiempo: <strong id="time">30</strong>s</p>
-    <div class="canvas-wrap"><canvas id="court"></canvas></div>
-    <div><button class="btn" onclick="endGameEarly()">Terminar juego</button></div>
-  </section>
-
-  <!-- Clasificación -->
-  <section id="clasificacion" class="card hidden">
-    <h2>Clasificación (Top 10)</h2>
-    <ul id="leaderboardList"></ul>
-    <div>
-      <button class="btn" onclick="showSection('juego'); startGame()">Jugar otra vez</button>
-      <button class="btn" onclick="showSection('inicio')">Inicio</button>
+    <div class="switch">
+      <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
+      <label for="darkModeToggle" class="slider"></label>
     </div>
+  </header>
+
+  <!-- SECTIONS -->
+  <section id="inicio">
+    <h2>Bienvenido</h2>
+    <p>Hola, soy Othniel Yeboah. Esta es mi página personal, creada para practicar HTML, CSS y diseño moderno en español con transiciones suaves y un estilo profesional.</p>
+    <a href="#sobre-mi" class="btn">Saber más</a>
   </section>
 
-  <footer>© 2025 Othniel Yeboah</footer>
+  <section id="sobre-mi">
+    <h2>Sobre mí</h2>
+    <p>Soy un estudiante apasionado por el desarrollo web, el baloncesto y la tecnología. Me gusta crear proyectos que se vean bien y funcionen de manera fluida, igual que las páginas más profesionales, como las de Apple.</p>
+  </section>
 
+  <section id="proyectos">
+    <h2>Mis Proyectos</h2>
+    <p>Aquí compartiré mis proyectos más recientes, desde sitios web personales hasta experiencias interactivas que mezclan diseño, movimiento y creatividad.</p>
+  </section>
+
+  <section id="contacto">
+    <h2>Contacto</h2>
+    <p>Puedes contactarme a través de mis redes sociales o correo electrónico. Gracias por visitar mi página personal.</p>
+    <a href="#inicio" class="btn">Volver arriba</a>
+  </section>
+
+  <!-- JAVASCRIPT -->
   <script>
-  // Dark mode
-  const darkBtn = document.getElementById('darkModeToggle');
-  darkBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    darkBtn.textContent = document.body.classList.contains('dark') ? 'Modo Claro' : 'Modo Oscuro';
-  });
-
-  function showSection(id){
-    document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-    if (id!=='juego') stopGame();
-    if (id==='clasificacion') renderLeaderboard();
-  }
-
-  function getStoredScores(){return JSON.parse(localStorage.getItem('puntajes')||'[]');}
-  function saveScores(arr){localStorage.setItem('puntajes',JSON.stringify(arr.slice(0,10)));}
-
-  const canvas=document.getElementById('court');
-  const ctx=canvas.getContext('2d');
-  let DPR=window.devicePixelRatio||1;
-  function resizeCanvas(){
-    const wrap=canvas.parentElement;
-    canvas.width=wrap.clientWidth*DPR;
-    canvas.height=wrap.clientHeight*DPR;
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-  }
-  window.addEventListener('resize',resizeCanvas);
-  resizeCanvas();
-
-  // ✅ Online images (no local assets needed)
-  const ballImg=new Image();
-  const hoopImg=new Image();
-  ballImg.src='https://raw.githubusercontent.com/othnielyeboah/test-assets/main/ball.png';
-  hoopImg.src='https://raw.githubusercontent.com/othnielyeboah/test-assets/main/hoop.png';
-  let loaded=0;
-  [ballImg,hoopImg].forEach(img=>img.onload=()=>{loaded++;if(loaded===2){drawStatic();}});
-
-  let score=0,timeLeft=30,timer=null,raf=null;
-  const ball={x:0,y:0,size:60,vy:0,launched:false};
-  function resetBall(){
-    const cw=canvas.width/DPR,ch=canvas.height/DPR;
-    ball.size=Math.min(80,Math.max(40,cw*0.12));
-    ball.x=cw/2-ball.size/2; ball.y=ch-ball.size-20;
-    ball.vy=0; ball.launched=false;
-  }
-
-  function drawStatic(){
-    resizeCanvas(); resetBall();
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawScene();
-  }
-
-  function drawScene(){
-    const cw=canvas.width/DPR,ch=canvas.height/DPR;
-    const hoopW=cw*0.3,hoopH=hoopW*0.45,hoopX=cw/2-hoopW/2,hoopY=ch*0.1;
-    ctx.drawImage(hoopImg,hoopX,hoopY,hoopW,hoopH);
-    if(ballImg.complete) ctx.drawImage(ballImg,ball.x,ball.y,ball.size,ball.size);
-    else{ctx.fillStyle='orange';ctx.beginPath();ctx.arc(ball.x+ball.size/2,ball.y+ball.size/2,ball.size/2,0,Math.PI*2);ctx.fill();}
-  }
-
-  function loop(){
-    const cw=canvas.width/DPR,ch=canvas.height/DPR;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const hoopW=cw*0.3,hoopH=hoopW*0.45,hoopX=cw/2-hoopW/2,hoopY=ch*0.1;
-    ctx.drawImage(hoopImg,hoopX,hoopY,hoopW,hoopH);
-
-    if(ball.launched){
-      ball.y+=ball.vy; ball.vy+=0.45;
-      const hoopMidY=hoopY+hoopH*0.6;
-      if(ball.y+ball.size/2>hoopMidY && ball.y+ball.size/2<hoopMidY+5 && ball.vy>0){
-        score++; document.getElementById('score').textContent=score;
-      }
-      if(ball.y>ch-ball.size-20){resetBall();}
+    // 🌗 Toggle Dark Mode
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
     }
-    ctx.drawImage(ballImg,ball.x,ball.y,ball.size,ball.size);
-    raf=requestAnimationFrame(loop);
-  }
 
-  function launchBall(){
-    if(!ball.launched){ball.launched=true;ball.vy=-10;}
-  }
-  canvas.addEventListener('click',launchBall);
-  canvas.addEventListener('touchstart',launchBall,{passive:true});
+    // 🕊️ Smooth Section Fade-in on Scroll (Apple-style)
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
 
-  function startGame(){
-    if(loaded<2){alert('Cargando imágenes...');return;}
-    score=0; timeLeft=30;
-    document.getElementById('score').textContent=score;
-    document.getElementById('time').textContent=timeLeft;
-    resetBall(); if(timer)clearInterval(timer);
-    timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=timeLeft;
-      if(timeLeft<=0)endGame();
-    },1000);
-    if(raf)cancelAnimationFrame(raf); raf=requestAnimationFrame(loop);
-  }
-
-  function stopGame(){
-    if(timer)clearInterval(timer);
-    if(raf)cancelAnimationFrame(raf);
-  }
-
-  function endGame(){
-    stopGame();
-    const user=localStorage.getItem('usuario')||'Anónimo';
-    const arr=getStoredScores();
-    arr.push({usuario:user,puntuacion:score});
-    arr.sort((a,b)=>b.puntuacion-a.puntuacion);
-    saveScores(arr);
-    showSection('clasificacion');
-  }
-
-  function endGameEarly(){
-    if(confirm('¿Terminar el juego?')) endGame();
-  }
-
-  function saveNameAndStart(){
-    const n=document.getElementById('nombreUsuario').value.trim();
-    if(!n){alert('Introduce tu nombre');return;}
-    localStorage.setItem('usuario',n);
-    showSection('juego');
-    startGame();
-  }
-
-  function renderLeaderboard(){
-    const list=document.getElementById('leaderboardList');
-    list.innerHTML='';
-    const data=getStoredScores();
-    if(!data.length){list.innerHTML='<li>Aún no hay puntuaciones.</li>';return;}
-    data.forEach((s,i)=>{
-      const li=document.createElement('li');
-      li.innerHTML=`${i+1}. <strong>${s.usuario}</strong> — ${s.puntuacion} pts`;
-      list.appendChild(li);
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded',()=>{
-    const saved=localStorage.getItem('usuario');
-    if(saved)document.getElementById('nombreUsuario').value=saved;
-    showSection('inicio');
-  });
+    sections.forEach(section => observer.observe(section));
   </script>
 </body>
 </html>
