@@ -1,98 +1,288 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Juego de Baloncesto | Othniel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Personal - Othniel Yeboah</title>
+
   <style>
-    :root{
-      --bg-light:#f5f5f7; --bg-dark:#111;
-      --text-light:#111; --text-dark:#f5f5f7;
-      --card-light:#fff; --card-dark:#222;
-      --accent:#0078d7;
+    :root {
+      --bg-color: #f5f5f7;
+      --text-color: #000;
+      --accent-color: #0078d7;
+      --card-bg: #ffffff;
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:var(--bg-light);
-      color:var(--text-light);
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      transition:background 0.45s ease,color 0.45s ease;
-    }
-    body.dark{ background:var(--bg-dark); color:var(--text-dark); }
-
-    header{ padding:28px 0; font-weight:600; font-size:1.25rem; }
-
-    nav{ display:flex; gap:12px; margin-bottom:18px; }
-    nav button{
-      background:var(--accent); color:#fff; border:none; padding:10px 16px; border-radius:10px;
-      cursor:pointer; font-weight:600; transition:transform .18s ease, background .18s;
-    }
-    nav button:hover{ transform:translateY(-3px); background:#005fa3; }
-
-    #darkModeToggle {
-      background:transparent; color:var(--accent); border:2px solid var(--accent);
-      padding:8px 12px; border-radius:10px; font-weight:600;
-    }
-    #darkModeToggle:hover{ background:var(--accent); color:#fff; }
-
-    .card{
-      width:92%; max-width:640px; border-radius:18px; padding:26px;
-      background:var(--card-light); box-shadow:0 14px 40px rgba(0,0,0,0.08);
-      transition:background .45s ease, box-shadow .45s ease, transform .35s;
-      text-align:center;
-    }
-    body.dark .card{ background:var(--card-dark); box-shadow:0 10px 30px rgba(255,255,255,0.03); }
-
-    .hidden{ display:none; }
-
-    input[type="text"]{
-      width:84%; padding:10px 12px; border-radius:10px; border:1px solid #cfcfcf; font-size:14px;
-      margin-top:10px;
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #f5f5f5;
+      --accent-color: #0a84ff;
+      --card-bg: #1e1e1e;
     }
 
-    .btn{ display:inline-block; margin-top:14px; padding:10px 16px; background:var(--accent); color:#fff;
-      border:none; border-radius:12px; cursor:pointer; font-weight:700;
+    * {
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
-    .btn:hover{ transform:translateY(-3px); background:#005fa3; }
 
-    .canvas-wrap{ width:100%; height:420px; display:flex; justify-content:center; align-items:center; margin-top:12px; }
-    canvas { width:100%; max-width:560px; height:100%; border-radius:12px; display:block; background:transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      scroll-behavior: smooth;
+    }
 
-    ul{ list-style:none; padding:0; text-align:left; margin:12px 0; }
-    li{ padding:8px 0; border-bottom:1px dashed rgba(0,0,0,0.05); }
+    header {
+      background-color: var(--accent-color);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
 
-    footer{ margin-top:auto; padding:18px 0; opacity:0.7; }
-    @media (max-width:520px){
-      .card{ padding:18px; border-radius:14px; }
-      header{ font-size:1.1rem; }
+    nav {
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 0;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 16px;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+
+    nav button:hover {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      background-color: #ccc;
+      border-radius: 26px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .toggle-switch::after {
+      content: "☀️";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 22px;
+      height: 22px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+
+    [data-theme="dark"] .toggle-switch {
+      background-color: #555;
+    }
+
+    [data-theme="dark"] .toggle-switch::after {
+      content: "🌙";
+      transform: translateX(24px);
+    }
+
+    section {
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+      background-color: var(--card-bg);
+      margin-top: 20px;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--accent-color);
+      color: white;
+      margin-top: 40px;
+    }
+
+    /* 🎮 Basketball Game Canvas */
+    #gameCanvas {
+      background: linear-gradient(to bottom, #ccc, #888);
+      border-radius: 12px;
+      display: block;
+      margin: 20px auto;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    #scoreDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 10px;
     }
   </style>
 </head>
+
 <body>
-  <header>🏀 Juego de Baloncesto</header>
+  <header>
+    <h1>Bienvenido a mi página personal</h1>
+    <p>Creada por Othniel Yeboah</p>
+  </header>
+
+  <div class="toggle-container">
+    <div class="toggle-switch" id="theme-toggle"></div>
+  </div>
 
   <nav>
-    <button onclick="showSection('inicio')">Inicio</button>
-    <button onclick="showSection('juego')">Jugar</button>
-    <button onclick="showSection('clasificacion')">Clasificación</button>
-    <button id="darkModeToggle">Modo Oscuro</button>
+    <button onclick="scrollToSection('inicio')">Inicio</button>
+    <button onclick="scrollToSection('sobre-mi')">Sobre mí</button>
+    <button onclick="scrollToSection('intereses')">Mis intereses</button>
+    <button onclick="scrollToSection('juego')">Juego</button>
+    <button onclick="scrollToSection('contacto')">Contacto</button>
   </nav>
 
-  <section id="inicio" class="card">
-    <h2>Bienvenido</h2>
-    <p>Introduce tu nombre y presiona Guardar.</p>
-    <input id="nombreUsuario" type="text" placeholder="Tu nombre..." />
-    <div><button class="btn" onclick="saveNameAndStart()">Guardar</button></div>
+  <section id="inicio">
+    <h2>Inicio</h2>
+    <p>Hola, soy Othniel. Bienvenido a mi sitio web personal.</p>
   </section>
 
-  <section id="juego" class="card hidden">
-    <h2>Haz clic o toca para lanzar</h2>
-    <p>Puntuación: <strong id="score">0</strong> • Tiempo: <strong id="time">30</strong>s</p>
-    <div class="canvas-wrap">
-      <canvas id="court
+  <section id="sobre-mi">
+    <h2>Sobre mí</h2>
+    <p>Apasionado por el baloncesto, la programación y el crecimiento personal.</p>
+  </section>
+
+  <section id="intereses">
+    <h2>Mis intereses</h2>
+    <ul>
+      <li>Baloncesto 🏀</li>
+      <li>Programación 💻</li>
+      <li>Música 🎸</li>
+    </ul>
+  </section>
+
+  <!-- 🎮 Game Section -->
+  <section id="juego">
+    <h2>Juego de Tiros</h2>
+    <p>Haz clic o toca la pantalla para lanzar la pelota al aro.</p>
+    <canvas id="gameCanvas" width="400" height="500"></canvas>
+    <div id="scoreDisplay">Puntuación: 0</div>
+  </section>
+
+  <section id="contacto">
+    <h2>Contacto</h2>
+    <form>
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Tu nombre...">
+
+      <label for="correo">Correo electrónico:</label>
+      <input type="email" id="correo" name="correo" placeholder="Tu correo...">
+
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 Othniel Yeboah | Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+    // 🌗 Dark/Light Mode Toggle
+    const toggleSwitch = document.getElementById("theme-toggle");
+    toggleSwitch.addEventListener("click", () => {
+      document.body.dataset.theme =
+        document.body.dataset.theme === "dark" ? "light" : "dark";
+    });
+
+    // 🎮 Simple Basketball Game
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let ball = { x: 200, y: 450, r: 12, dx: 0, dy: 0, shooting: false };
+    let hoop = { x: 160, y: 120, w: 80, h: 10 };
+    let score = 0;
+
+    function drawHoop() {
+      ctx.fillStyle = "#ff3b30";
+      ctx.fillRect(hoop.x, hoop.y, hoop.w, hoop.h);
+    }
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+      ctx.fillStyle = "#ff9500";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function resetBall() {
+      ball.x = 200;
+      ball.y = 450;
+      ball.dx = 0;
+      ball.dy = 0;
+      ball.shooting = false;
+    }
+
+    function shoot() {
+      if (!ball.shooting) {
+        ball.dy = -8;
+        ball.dx = (Math.random() - 0.5) * 2;
+        ball.shooting = true;
+      }
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawHoop();
+      drawBall();
+
+      if (ball.shooting) {
+        ball.y += ball.dy;
+        ball.x += ball.dx;
+        ball.dy += 0.3;
+
+        if (
+          ball.y - ball.r < hoop.y + hoop.h &&
+          ball.x > hoop.x &&
+          ball.x < hoop.x + hoop.w
+        ) {
+          score++;
+          document.getElementById("scoreDisplay").innerText = "Puntuación: " + score;
+          resetBall();
+        }
+
+        if (ball.y + ball.r > canvas.height) {
+          resetBall();
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    canvas.addEventListener("click", shoot);
+    update();
+
+    // Smooth Scrolling
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
