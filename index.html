@@ -1,297 +1,421 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Juego de Baloncesto | Othniel Yeboah</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Juego de Baloncesto | Othniel</title>
   <style>
-    :root {
-      --bg-light: #f5f5f7;
-      --bg-dark: #1c1c1e;
-      --text-light: #1d1d1f;
-      --text-dark: #f5f5f7;
-      --card-light: #ffffff;
-      --card-dark: #2c2c2e;
-      --accent: #0078d7;
+    :root{
+      --bg-light:#f5f5f7; --bg-dark:#111;
+      --text-light:#111; --text-dark:#f5f5f7;
+      --card-light:#fff; --card-dark:#222;
+      --accent:#0078d7;
     }
 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-light);
-      transition: background-color 0.5s ease, color 0.5s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      scroll-behavior: smooth;
+    /* Page */
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg-light);
+      color:var(--text-light);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      transition:background 0.45s ease,color 0.45s ease;
     }
+    body.dark{ background:var(--bg-dark); color:var(--text-dark); }
 
-    body.dark {
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-    }
+    header{ padding:28px 0; font-weight:600; font-size:1.25rem; }
 
-    header {
-      width: 100%;
-      text-align: center;
-      padding: 30px 0;
-      font-size: 1.8em;
-      font-weight: 600;
-      transition: color 0.5s ease;
+    nav{ display:flex; gap:12px; margin-bottom:18px; }
+    nav button{
+      background:var(--accent); color:#fff; border:none; padding:10px 16px; border-radius:10px;
+      cursor:pointer; font-weight:600; transition:transform .18s ease, background .18s;
     }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    nav button {
-      background-color: var(--accent);
-      border: none;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 12px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: transform 0.2s, background-color 0.3s;
-    }
-
-    nav button:hover {
-      transform: scale(1.05);
-      background-color: #005fa3;
-    }
+    nav button:hover{ transform:translateY(-3px); background:#005fa3; }
 
     #darkModeToggle {
-      background: none;
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      font-size: 14px;
-      padding: 10px 14px;
-      border-radius: 12px;
-      transition: all 0.3s ease;
+      background:transparent; color:var(--accent); border:2px solid var(--accent);
+      padding:8px 12px; border-radius:10px; font-weight:600;
+    }
+    #darkModeToggle:hover{ background:var(--accent); color:#fff; }
+
+    .card{
+      width:92%; max-width:640px; border-radius:18px; padding:26px;
+      background:var(--card-light); box-shadow:0 14px 40px rgba(0,0,0,0.08);
+      transition:background .45s ease, box-shadow .45s ease, transform .35s;
+      text-align:center;
+    }
+    body.dark .card{ background:var(--card-dark); box-shadow:0 10px 30px rgba(255,255,255,0.03); }
+
+    .hidden{ display:none; }
+
+    input[type="text"]{
+      width:84%; padding:10px 12px; border-radius:10px; border:1px solid #cfcfcf; font-size:14px;
+      margin-top:10px;
     }
 
-    #darkModeToggle:hover {
-      background-color: var(--accent);
-      color: white;
+    .btn{ display:inline-block; margin-top:14px; padding:10px 16px; background:var(--accent); color:#fff;
+      border:none; border-radius:12px; cursor:pointer; font-weight:700;
     }
+    .btn:hover{ transform:translateY(-3px); background:#005fa3; }
 
-    .card {
-      background-color: var(--card-light);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      transition: all 0.5s ease;
-      width: 90%;
-      max-width: 500px;
-      text-align: center;
-    }
+    /* Canvas container to keep ratio */
+    .canvas-wrap{ width:100%; height:420px; display:flex; justify-content:center; align-items:center; margin-top:12px; }
+    canvas { width:100%; max-width:560px; height:100%; border-radius:12px; display:block; background:transparent; }
 
-    body.dark .card {
-      background-color: var(--card-dark);
-      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
-    }
+    ul{ list-style:none; padding:0; text-align:left; margin:12px 0; }
+    li{ padding:8px 0; border-bottom:1px dashed rgba(0,0,0,0.05); }
 
-    .hidden {
-      display: none;
-    }
-
-    canvas {
-      width: 100%;
-      height: 400px;
-      background-color: transparent;
-    }
-
-    footer {
-      margin-top: auto;
-      padding: 20px;
-      text-align: center;
-      font-size: 0.9em;
-      opacity: 0.7;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      margin: 5px 0;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      width: 80%;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .btn {
-      margin-top: 20px;
-      padding: 12px 20px;
-      background-color: var(--accent);
-      border: none;
-      color: white;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.2s, background-color 0.3s;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-      background-color: #005fa3;
+    footer{ margin-top:auto; padding:18px 0; opacity:0.7; }
+    @media (max-width:520px){
+      .card{ padding:18px; border-radius:14px; }
+      header{ font-size:1.1rem; }
     }
   </style>
 </head>
-
 <body>
   <header>🏀 Juego de Baloncesto</header>
 
   <nav>
-    <button onclick="mostrarSeccion('inicio')">Inicio</button>
-    <button onclick="mostrarSeccion('juego')">Jugar</button>
-    <button onclick="mostrarSeccion('clasificacion')">Clasificación</button>
+    <button onclick="showSection('inicio')">Inicio</button>
+    <button onclick="showSection('juego')">Jugar</button>
+    <button onclick="showSection('clasificacion')">Clasificación</button>
     <button id="darkModeToggle">Modo Oscuro</button>
   </nav>
 
-  <!-- Inicio -->
+  <!-- START -->
   <section id="inicio" class="card">
     <h2>Bienvenido</h2>
-    <p>Introduce tu nombre para comenzar:</p>
-    <input type="text" id="nombreUsuario" placeholder="Tu nombre...">
-    <button class="btn" onclick="guardarNombre()">Guardar Nombre</button>
+    <p>Introduce tu nombre y presiona Guardar.</p>
+    <input id="nombreUsuario" type="text" placeholder="Tu nombre..." />
+    <div><button class="btn" onclick="saveNameAndStart()">Guardar</button></div>
   </section>
 
-  <!-- Juego -->
+  <!-- GAME -->
   <section id="juego" class="card hidden">
-    <h2>Haz clic para lanzar</h2>
-    <p>Puntuación: <span id="puntuacion">0</span> | Tiempo: <span id="tiempo">30</span>s</p>
-    <canvas id="cancha"></canvas>
+    <h2>Haz clic o toca para lanzar</h2>
+    <p>Puntuación: <strong id="score">0</strong>  •  Tiempo: <strong id="time">30</strong>s</p>
+
+    <div class="canvas-wrap">
+      <canvas id="court"></canvas>
+    </div>
+
+    <div style="margin-top:12px">
+      <button class="btn" onclick="endGameEarly()">Terminar juego</button>
+    </div>
   </section>
 
-  <!-- Clasificación -->
+  <!-- LEADERBOARD -->
   <section id="clasificacion" class="card hidden">
-    <h2>Clasificación</h2>
-    <ul id="listaPuntuaciones"></ul>
+    <h2>Clasificación (Top 10)</h2>
+    <ul id="leaderboardList"></ul>
+    <div style="margin-top:12px">
+      <button class="btn" onclick="showSection('juego'); startGame()">Jugar otra vez</button>
+      <button style="margin-left:8px" class="btn" onclick="showSection('inicio')">Inicio</button>
+    </div>
   </section>
 
-  <footer>© 2025 Othniel Yeboah | Todos los derechos reservados</footer>
+  <footer>© 2025 Othniel Yeboah</footer>
 
   <script>
-    // 🌗 Modo Oscuro/Claro
-    const toggle = document.getElementById("darkModeToggle");
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      toggle.textContent = document.body.classList.contains("dark") ? "Modo Claro" : "Modo Oscuro";
+  /* -------------------------
+     Setup & theme toggle
+     -------------------------*/
+  const darkBtn = document.getElementById('darkModeToggle');
+  darkBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    darkBtn.textContent = document.body.classList.contains('dark') ? 'Modo Claro' : 'Modo Oscuro';
+  });
+
+  function showSection(id){
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    // pause game if leaving section
+    if (id !== 'juego') stopGameLoop();
+    if (id === 'clasificacion') renderLeaderboard();
+  }
+
+  /* -------------------------
+     Storage helpers
+     -------------------------*/
+  function getStoredScores(){ return JSON.parse(localStorage.getItem('puntajes') || '[]'); }
+  function saveScores(arr){ localStorage.setItem('puntajes', JSON.stringify(arr.slice(0,10))); }
+
+  /* -------------------------
+     Canvas & images setup
+     -------------------------*/
+  const canvas = document.getElementById('court');
+  const ctx = canvas.getContext('2d');
+  let DPR = window.devicePixelRatio || 1;
+
+  function resizeCanvas(){
+    const wrap = canvas.parentElement;
+    const cssW = wrap.clientWidth;
+    const cssH = wrap.clientHeight;
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    canvas.width = Math.floor(cssW * DPR);
+    canvas.height = Math.floor(cssH * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0); // scale for high DPI
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+
+  const ballImg = new Image();
+  const hoopImg = new Image();
+  ballImg.src = './assets/ball.png';
+  hoopImg.src = './assets/hoop.png';
+
+  let imagesLoaded = 0;
+  [ballImg, hoopImg].forEach(img => {
+    img.onload = () => {
+      imagesLoaded++;
+      if (imagesLoaded === 2) {
+        // ready to play (canvas resized and initial draw)
+        resizeCanvas();
+        drawStatic();
+      }
+    };
+    img.onerror = () => console.error('Error loading image:', img.src);
+  });
+
+  /* -------------------------
+     Game state
+     -------------------------*/
+  let score = 0;
+  let timeLeft = 30;
+  let gameInterval = null;
+  let rafId = null;
+
+  // ball properties (in CSS pixels)
+  let ball = { x: 0, y: 0, size: 50, vy:0, launched:false, scoredThisLaunch:false };
+
+  function resetBall(){
+    const cw = canvas.clientWidth;
+    const ch = canvas.clientHeight;
+    ball.size = Math.max(36, Math.min(80, Math.floor(cw * 0.12))); // scale ball by width
+    ball.x = cw / 2 - ball.size / 2;
+    ball.y = ch - ball.size - 18;
+    ball.vy = 0;
+    ball.launched = false;
+    ball.scoredThisLaunch = false;
+  }
+
+  // hoop properties (computed on draw)
+  function computeHoop(){
+    const cw = canvas.clientWidth;
+    const ch = canvas.clientHeight;
+    const hoopW = Math.max(90, Math.floor(cw * 0.24));
+    const hoopH = Math.floor(hoopW * 0.45);
+    const hx = cw/2 - hoopW/2;
+    const hy = Math.floor(ch * 0.12);
+    return { x: hx, y: hy, w: hoopW, h: hoopH };
+  }
+
+  /* -------------------------
+     Input handlers
+     -------------------------*/
+  function tryLaunch(){
+    if (!ball.launched){
+      ball.launched = true;
+      ball.vy = -10 - Math.random()*1.5; // up velocity
+      ball.scoredThisLaunch = false;
+    }
+  }
+
+  function onShotClick(){
+    tryLaunch();
+  }
+
+  function onKeyDown(e){
+    if (e.code === 'Space'){ e.preventDefault(); tryLaunch(); }
+  }
+
+  function attachInput(){
+    canvas.addEventListener('click', onShotClick);
+    canvas.addEventListener('touchstart', onShotClick, {passive:true});
+    window.addEventListener('keydown', onKeyDown);
+  }
+
+  function detachInput(){
+    canvas.removeEventListener('click', onShotClick);
+    canvas.removeEventListener('touchstart', onShotClick);
+    window.removeEventListener('keydown', onKeyDown);
+  }
+
+  /* -------------------------
+     Draw & game loop
+     -------------------------*/
+  function drawStatic(){
+    // draw static scene (hoop and ball at rest)
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const cwp = canvas.clientWidth, chp = canvas.clientHeight;
+    const hoop = computeHoop();
+    // draw hoop scaled
+    ctx.drawImage(hoopImg, hoop.x, hoop.y, hoop.w, hoop.h);
+    // draw ball
+    ctx.drawImage(ballImg, ball.x, ball.y, ball.size, ball.size);
+  }
+
+  function gameStep(){
+    const cw = canvas.clientWidth, ch = canvas.clientHeight;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const hoop = computeHoop();
+    // draw hoop first (behind)
+    ctx.drawImage(hoopImg, hoop.x, hoop.y, hoop.w, hoop.h);
+
+    // update ball physics
+    if (ball.launched){
+      ball.y += ball.vy;
+      ball.vy += 0.45; // gravity
+      // detect pass-through hoop (approx)
+      const ballCenterX = ball.x + ball.size/2;
+      const ballCenterY = ball.y + ball.size/2;
+      // define inner hoop band (a little below rim)
+      const innerTop = hoop.y + hoop.h * 0.45;
+      const innerBottom = hoop.y + hoop.h * 0.7;
+      const innerLeft = hoop.x + hoop.w * 0.18;
+      const innerRight = hoop.x + hoop.w * 0.82;
+
+      if (!ball.scoredThisLaunch &&
+          ballCenterX > innerLeft && ballCenterX < innerRight &&
+          ballCenterY > innerTop && ballCenterY < innerBottom &&
+          ball.vy > 0) {
+        // going down through hoop area -> score
+        score++;
+        ball.scoredThisLaunch = true;
+        document.getElementById('score').textContent = score;
+      }
+
+      // ground collision (reset to bottom)
+      if (ball.y > ch - ball.size - 18){
+        ball.y = ch - ball.size - 18;
+        ball.launched = false;
+        ball.vy = 0;
+        // small bounce animation could go here
+      }
+    }
+
+    // draw ball on top
+    ctx.drawImage(ballImg, ball.x, ball.y, ball.size, ball.size);
+
+    rafId = requestAnimationFrame(gameStep);
+  }
+
+  /* -------------------------
+     Game lifecycle
+     -------------------------*/
+  function startGame(){
+    if (imagesLoaded < 2){
+      // wait if images not ready
+      alert('Cargando recursos, espera un momento...');
+      return;
+    }
+    // reset
+    score = 0;
+    timeLeft = 30;
+    document.getElementById('score').textContent = score;
+    document.getElementById('time').textContent = timeLeft;
+
+    resizeCanvas();
+    resetBall();
+    drawStatic();
+
+    // start timer
+    if (gameInterval) clearInterval(gameInterval);
+    gameInterval = setInterval(() => {
+      timeLeft--;
+      document.getElementById('time').textContent = timeLeft;
+      if (timeLeft <= 0){
+        stopGameLoop();
+        saveScoreAndShowBoard();
+      }
+    }, 1000);
+
+    // attach inputs and start animation
+    detachInput();
+    attachInput();
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(gameStep);
+  }
+
+  function stopGameLoop(){
+    if (gameInterval) { clearInterval(gameInterval); gameInterval = null; }
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    detachInput();
+  }
+
+  function saveScoreAndShowBoard(){
+    stopGameLoop();
+    const user = localStorage.getItem('usuario') || 'Anónimo';
+    const arr = getStoredScores();
+    arr.push({usuario:user, puntuacion: score, fecha: new Date().toISOString()});
+    arr.sort((a,b)=>b.puntuacion - a.puntuacion);
+    saveScores(arr);
+    renderLeaderboard();
+    showSection('clasificacion');
+  }
+
+  function endGameEarly(){
+    // manual end
+    if (confirm('¿Terminar el juego ahora?')) {
+      saveScoreAndShowBoard();
+    }
+  }
+
+  /* -------------------------
+     UI helpers
+     -------------------------*/
+  function saveNameAndStart(){
+    const name = document.getElementById('nombreUsuario').value.trim();
+    if (!name){
+      alert('Introduce tu nombre.');
+      return;
+    }
+    localStorage.setItem('usuario', name);
+    showSection('juego');
+    startGame();
+  }
+
+  function renderLeaderboard(){
+    const list = document.getElementById('leaderboardList');
+    list.innerHTML = '';
+    const scores = getStoredScores();
+    if (scores.length === 0){
+      const li = document.createElement('li'); li.textContent = 'Aún no hay puntuaciones.';
+      list.appendChild(li); return;
+    }
+    scores.forEach((s,i)=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${i+1}. ${escapeHtml(s.usuario)}</strong> — ${s.puntuacion} pts`;
+      list.appendChild(li);
     });
+  }
 
-    // 🔄 Navegación entre secciones
-    function mostrarSeccion(id) {
-      document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
-    }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
+  }
 
-    // 💾 Guardar nombre
-    function guardarNombre() {
-      const nombre = document.getElementById("nombreUsuario").value.trim();
-      if (nombre) {
-        localStorage.setItem("usuario", nombre);
-        mostrarSeccion('juego');
-        iniciarJuego();
-      } else {
-        alert("Por favor, introduce tu nombre.");
-      }
-    }
+  /* -------------------------
+     Auto: prefill name if exists
+     -------------------------*/
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('usuario');
+    if (saved) document.getElementById('nombreUsuario').value = saved;
+    // show the start section by default
+    showSection('inicio');
+    // resize when first load
+    resizeCanvas();
+    // if images loaded earlier call drawStatic
+    if (imagesLoaded === 2) drawStatic();
+  });
 
-    // 🏀 Juego
-    let puntuacion = 0;
-    let tiempo = 30;
-    let intervalo;
-    const canvas = document.getElementById("cancha");
-    const ctx = canvas.getContext("2d");
-    let ballImg = new Image();
-    let hoopImg = new Image();
-    ballImg.src = "./assets/ball.png";
-    hoopImg.src = "./assets/hoop.png";
-
-    function iniciarJuego() {
-      puntuacion = 0;
-      tiempo = 30;
-      document.getElementById("puntuacion").textContent = puntuacion;
-      document.getElementById("tiempo").textContent = tiempo;
-
-      intervalo = setInterval(() => {
-        tiempo--;
-        document.getElementById("tiempo").textContent = tiempo;
-        if (tiempo <= 0) {
-          clearInterval(intervalo);
-          guardarPuntuacion();
-          mostrarSeccion('clasificacion');
-        }
-      }, 1000);
-
-      canvas.addEventListener("click", lanzar);
-      dibujar();
-    }
-
-    let ballY = 350;
-    let ballX = 240;
-    let velY = 0;
-    let lanzando = false;
-
-    function lanzar() {
-      if (!lanzando) {
-        lanzando = true;
-        velY = -8;
-      }
-    }
-
-    function dibujar() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(hoopImg, canvas.width / 2 - 60, 50, 120, 60);
-      ctx.drawImage(ballImg, ballX, ballY, 50, 50);
-
-      if (lanzando) {
-        ballY += velY;
-        velY += 0.4;
-        if (ballY > 350) {
-          ballY = 350;
-          lanzando = false;
-        }
-        if (ballY < 100 && ballX > canvas.width / 2 - 60 && ballX < canvas.width / 2 + 60) {
-          puntuacion++;
-          document.getElementById("puntuacion").textContent = puntuacion;
-        }
-      }
-      requestAnimationFrame(dibujar);
-    }
-
-    // 🧾 Clasificación
-    function guardarPuntuacion() {
-      const usuario = localStorage.getItem("usuario") || "Anónimo";
-      const puntajes = JSON.parse(localStorage.getItem("puntajes") || "[]");
-      puntajes.push({ usuario, puntuacion });
-      puntajes.sort((a, b) => b.puntuacion - a.puntuacion);
-      localStorage.setItem("puntajes", JSON.stringify(puntajes.slice(0, 10)));
-      mostrarClasificacion();
-    }
-
-    function mostrarClasificacion() {
-      const lista = document.getElementById("listaPuntuaciones");
-      lista.innerHTML = "";
-      const puntajes = JSON.parse(localStorage.getItem("puntajes") || "[]");
-      puntajes.forEach(p => {
-        const li = document.createElement("li");
-        li.textContent = `${p.usuario}: ${p.puntuacion} puntos`;
-        lista.appendChild(li);
-      });
-    }
+  // expose some controls for console debugging (optional)
+  window.__game = { startGame, stopGameLoop, saveScoreAndShowBoard, renderLeaderboard };
   </script>
 </body>
 </html>
