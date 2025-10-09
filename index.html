@@ -5,34 +5,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Juego de Baloncesto | Othniel</title>
   <style>
-    :root{
+    :root {
       --bg-light:#f5f5f7; --bg-dark:#111;
       --text-light:#111; --text-dark:#f5f5f7;
       --card-light:#fff; --card-dark:#222;
       --accent:#0078d7;
     }
 
-    /* Page */
-    *{box-sizing:border-box}
-    body{
-      margin:0;
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body {
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:var(--bg-light);
-      color:var(--text-light);
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      transition:background 0.45s ease,color 0.45s ease;
+      background:var(--bg-light); color:var(--text-light);
+      display:flex; flex-direction:column; align-items:center;
+      min-height:100vh; transition:background .4s,color .4s;
     }
     body.dark{ background:var(--bg-dark); color:var(--text-dark); }
 
-    header{ padding:28px 0; font-weight:600; font-size:1.25rem; }
+    header{ font-weight:600; font-size:1.25rem; padding:28px 0; }
 
-    nav{ display:flex; gap:12px; margin-bottom:18px; }
+    nav{ display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; justify-content:center; }
     nav button{
       background:var(--accent); color:#fff; border:none; padding:10px 16px; border-radius:10px;
-      cursor:pointer; font-weight:600; transition:transform .18s ease, background .18s;
+      cursor:pointer; font-weight:600; transition:.25s;
     }
     nav button:hover{ transform:translateY(-3px); background:#005fa3; }
 
@@ -42,43 +36,37 @@
     }
     #darkModeToggle:hover{ background:var(--accent); color:#fff; }
 
-    .card{
+    .card {
       width:92%; max-width:640px; border-radius:18px; padding:26px;
-      background:var(--card-light); box-shadow:0 14px 40px rgba(0,0,0,0.08);
-      transition:background .45s ease, box-shadow .45s ease, transform .35s;
+      background:var(--card-light);
+      box-shadow:0 14px 40px rgba(0,0,0,0.08);
+      transition:background .45s,box-shadow .45s;
       text-align:center;
     }
-    body.dark .card{ background:var(--card-dark); box-shadow:0 10px 30px rgba(255,255,255,0.03); }
+    body.dark .card{ background:var(--card-dark); box-shadow:0 10px 30px rgba(255,255,255,0.05); }
 
     .hidden{ display:none; }
 
-    input[type="text"]{
-      width:84%; padding:10px 12px; border-radius:10px; border:1px solid #cfcfcf; font-size:14px;
-      margin-top:10px;
+    input[type="text"] {
+      width:84%; padding:10px; border-radius:10px; border:1px solid #cfcfcf; font-size:14px; margin-top:10px;
     }
-
-    .btn{ display:inline-block; margin-top:14px; padding:10px 16px; background:var(--accent); color:#fff;
-      border:none; border-radius:12px; cursor:pointer; font-weight:700;
+    .btn{
+      display:inline-block; margin-top:14px; padding:10px 16px; background:var(--accent); color:#fff;
+      border:none; border-radius:12px; cursor:pointer; font-weight:700; transition:.2s;
     }
     .btn:hover{ transform:translateY(-3px); background:#005fa3; }
 
-    /* Canvas container to keep ratio */
     .canvas-wrap{ width:100%; height:420px; display:flex; justify-content:center; align-items:center; margin-top:12px; }
-    canvas { width:100%; max-width:560px; height:100%; border-radius:12px; display:block; background:transparent; }
+    canvas { width:100%; max-width:560px; height:100%; border-radius:12px; background:transparent; display:block; }
 
     ul{ list-style:none; padding:0; text-align:left; margin:12px 0; }
     li{ padding:8px 0; border-bottom:1px dashed rgba(0,0,0,0.05); }
 
     footer{ margin-top:auto; padding:18px 0; opacity:0.7; }
-    @media (max-width:520px){
-      .card{ padding:18px; border-radius:14px; }
-      header{ font-size:1.1rem; }
-    }
   </style>
 </head>
 <body>
   <header>🏀 Juego de Baloncesto</header>
-
   <nav>
     <button onclick="showSection('inicio')">Inicio</button>
     <button onclick="showSection('juego')">Jugar</button>
@@ -86,7 +74,7 @@
     <button id="darkModeToggle">Modo Oscuro</button>
   </nav>
 
-  <!-- START -->
+  <!-- Inicio -->
   <section id="inicio" class="card">
     <h2>Bienvenido</h2>
     <p>Introduce tu nombre y presiona Guardar.</p>
@@ -94,36 +82,28 @@
     <div><button class="btn" onclick="saveNameAndStart()">Guardar</button></div>
   </section>
 
-  <!-- GAME -->
+  <!-- Juego -->
   <section id="juego" class="card hidden">
     <h2>Haz clic o toca para lanzar</h2>
-    <p>Puntuación: <strong id="score">0</strong>  •  Tiempo: <strong id="time">30</strong>s</p>
-
-    <div class="canvas-wrap">
-      <canvas id="court"></canvas>
-    </div>
-
-    <div style="margin-top:12px">
-      <button class="btn" onclick="endGameEarly()">Terminar juego</button>
-    </div>
+    <p>Puntuación: <strong id="score">0</strong> • Tiempo: <strong id="time">30</strong>s</p>
+    <div class="canvas-wrap"><canvas id="court"></canvas></div>
+    <div><button class="btn" onclick="endGameEarly()">Terminar juego</button></div>
   </section>
 
-  <!-- LEADERBOARD -->
+  <!-- Clasificación -->
   <section id="clasificacion" class="card hidden">
     <h2>Clasificación (Top 10)</h2>
     <ul id="leaderboardList"></ul>
-    <div style="margin-top:12px">
+    <div>
       <button class="btn" onclick="showSection('juego'); startGame()">Jugar otra vez</button>
-      <button style="margin-left:8px" class="btn" onclick="showSection('inicio')">Inicio</button>
+      <button class="btn" onclick="showSection('inicio')">Inicio</button>
     </div>
   </section>
 
   <footer>© 2025 Othniel Yeboah</footer>
 
   <script>
-  /* -------------------------
-     Setup & theme toggle
-     -------------------------*/
+  // Dark mode
   const darkBtn = document.getElementById('darkModeToggle');
   darkBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark');
@@ -131,291 +111,138 @@
   });
 
   function showSection(id){
-    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
-    // pause game if leaving section
-    if (id !== 'juego') stopGameLoop();
-    if (id === 'clasificacion') renderLeaderboard();
+    if (id!=='juego') stopGame();
+    if (id==='clasificacion') renderLeaderboard();
   }
 
-  /* -------------------------
-     Storage helpers
-     -------------------------*/
-  function getStoredScores(){ return JSON.parse(localStorage.getItem('puntajes') || '[]'); }
-  function saveScores(arr){ localStorage.setItem('puntajes', JSON.stringify(arr.slice(0,10))); }
+  function getStoredScores(){return JSON.parse(localStorage.getItem('puntajes')||'[]');}
+  function saveScores(arr){localStorage.setItem('puntajes',JSON.stringify(arr.slice(0,10)));}
 
-  /* -------------------------
-     Canvas & images setup
-     -------------------------*/
-  const canvas = document.getElementById('court');
-  const ctx = canvas.getContext('2d');
-  let DPR = window.devicePixelRatio || 1;
-
+  const canvas=document.getElementById('court');
+  const ctx=canvas.getContext('2d');
+  let DPR=window.devicePixelRatio||1;
   function resizeCanvas(){
-    const wrap = canvas.parentElement;
-    const cssW = wrap.clientWidth;
-    const cssH = wrap.clientHeight;
-    canvas.style.width = cssW + 'px';
-    canvas.style.height = cssH + 'px';
-    canvas.width = Math.floor(cssW * DPR);
-    canvas.height = Math.floor(cssH * DPR);
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0); // scale for high DPI
+    const wrap=canvas.parentElement;
+    canvas.width=wrap.clientWidth*DPR;
+    canvas.height=wrap.clientHeight*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
   }
+  window.addEventListener('resize',resizeCanvas);
+  resizeCanvas();
 
-  window.addEventListener('resize', resizeCanvas);
+  // ✅ Online images (no local assets needed)
+  const ballImg=new Image();
+  const hoopImg=new Image();
+  ballImg.src='https://raw.githubusercontent.com/othnielyeboah/test-assets/main/ball.png';
+  hoopImg.src='https://raw.githubusercontent.com/othnielyeboah/test-assets/main/hoop.png';
+  let loaded=0;
+  [ballImg,hoopImg].forEach(img=>img.onload=()=>{loaded++;if(loaded===2){drawStatic();}});
 
-  const ballImg = new Image();
-  const hoopImg = new Image();
-  ballImg.src = './assets/ball.png';
-  hoopImg.src = './assets/hoop.png';
-
-  let imagesLoaded = 0;
-  [ballImg, hoopImg].forEach(img => {
-    img.onload = () => {
-      imagesLoaded++;
-      if (imagesLoaded === 2) {
-        // ready to play (canvas resized and initial draw)
-        resizeCanvas();
-        drawStatic();
-      }
-    };
-    img.onerror = () => console.error('Error loading image:', img.src);
-  });
-
-  /* -------------------------
-     Game state
-     -------------------------*/
-  let score = 0;
-  let timeLeft = 30;
-  let gameInterval = null;
-  let rafId = null;
-
-  // ball properties (in CSS pixels)
-  let ball = { x: 0, y: 0, size: 50, vy:0, launched:false, scoredThisLaunch:false };
-
+  let score=0,timeLeft=30,timer=null,raf=null;
+  const ball={x:0,y:0,size:60,vy:0,launched:false};
   function resetBall(){
-    const cw = canvas.clientWidth;
-    const ch = canvas.clientHeight;
-    ball.size = Math.max(36, Math.min(80, Math.floor(cw * 0.12))); // scale ball by width
-    ball.x = cw / 2 - ball.size / 2;
-    ball.y = ch - ball.size - 18;
-    ball.vy = 0;
-    ball.launched = false;
-    ball.scoredThisLaunch = false;
+    const cw=canvas.width/DPR,ch=canvas.height/DPR;
+    ball.size=Math.min(80,Math.max(40,cw*0.12));
+    ball.x=cw/2-ball.size/2; ball.y=ch-ball.size-20;
+    ball.vy=0; ball.launched=false;
   }
 
-  // hoop properties (computed on draw)
-  function computeHoop(){
-    const cw = canvas.clientWidth;
-    const ch = canvas.clientHeight;
-    const hoopW = Math.max(90, Math.floor(cw * 0.24));
-    const hoopH = Math.floor(hoopW * 0.45);
-    const hx = cw/2 - hoopW/2;
-    const hy = Math.floor(ch * 0.12);
-    return { x: hx, y: hy, w: hoopW, h: hoopH };
-  }
-
-  /* -------------------------
-     Input handlers
-     -------------------------*/
-  function tryLaunch(){
-    if (!ball.launched){
-      ball.launched = true;
-      ball.vy = -10 - Math.random()*1.5; // up velocity
-      ball.scoredThisLaunch = false;
-    }
-  }
-
-  function onShotClick(){
-    tryLaunch();
-  }
-
-  function onKeyDown(e){
-    if (e.code === 'Space'){ e.preventDefault(); tryLaunch(); }
-  }
-
-  function attachInput(){
-    canvas.addEventListener('click', onShotClick);
-    canvas.addEventListener('touchstart', onShotClick, {passive:true});
-    window.addEventListener('keydown', onKeyDown);
-  }
-
-  function detachInput(){
-    canvas.removeEventListener('click', onShotClick);
-    canvas.removeEventListener('touchstart', onShotClick);
-    window.removeEventListener('keydown', onKeyDown);
-  }
-
-  /* -------------------------
-     Draw & game loop
-     -------------------------*/
   function drawStatic(){
-    // draw static scene (hoop and ball at rest)
+    resizeCanvas(); resetBall();
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    const cwp = canvas.clientWidth, chp = canvas.clientHeight;
-    const hoop = computeHoop();
-    // draw hoop scaled
-    ctx.drawImage(hoopImg, hoop.x, hoop.y, hoop.w, hoop.h);
-    // draw ball
-    ctx.drawImage(ballImg, ball.x, ball.y, ball.size, ball.size);
+    drawScene();
   }
 
-  function gameStep(){
-    const cw = canvas.clientWidth, ch = canvas.clientHeight;
+  function drawScene(){
+    const cw=canvas.width/DPR,ch=canvas.height/DPR;
+    const hoopW=cw*0.3,hoopH=hoopW*0.45,hoopX=cw/2-hoopW/2,hoopY=ch*0.1;
+    ctx.drawImage(hoopImg,hoopX,hoopY,hoopW,hoopH);
+    if(ballImg.complete) ctx.drawImage(ballImg,ball.x,ball.y,ball.size,ball.size);
+    else{ctx.fillStyle='orange';ctx.beginPath();ctx.arc(ball.x+ball.size/2,ball.y+ball.size/2,ball.size/2,0,Math.PI*2);ctx.fill();}
+  }
+
+  function loop(){
+    const cw=canvas.width/DPR,ch=canvas.height/DPR;
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    const hoopW=cw*0.3,hoopH=hoopW*0.45,hoopX=cw/2-hoopW/2,hoopY=ch*0.1;
+    ctx.drawImage(hoopImg,hoopX,hoopY,hoopW,hoopH);
 
-    const hoop = computeHoop();
-    // draw hoop first (behind)
-    ctx.drawImage(hoopImg, hoop.x, hoop.y, hoop.w, hoop.h);
-
-    // update ball physics
-    if (ball.launched){
-      ball.y += ball.vy;
-      ball.vy += 0.45; // gravity
-      // detect pass-through hoop (approx)
-      const ballCenterX = ball.x + ball.size/2;
-      const ballCenterY = ball.y + ball.size/2;
-      // define inner hoop band (a little below rim)
-      const innerTop = hoop.y + hoop.h * 0.45;
-      const innerBottom = hoop.y + hoop.h * 0.7;
-      const innerLeft = hoop.x + hoop.w * 0.18;
-      const innerRight = hoop.x + hoop.w * 0.82;
-
-      if (!ball.scoredThisLaunch &&
-          ballCenterX > innerLeft && ballCenterX < innerRight &&
-          ballCenterY > innerTop && ballCenterY < innerBottom &&
-          ball.vy > 0) {
-        // going down through hoop area -> score
-        score++;
-        ball.scoredThisLaunch = true;
-        document.getElementById('score').textContent = score;
+    if(ball.launched){
+      ball.y+=ball.vy; ball.vy+=0.45;
+      const hoopMidY=hoopY+hoopH*0.6;
+      if(ball.y+ball.size/2>hoopMidY && ball.y+ball.size/2<hoopMidY+5 && ball.vy>0){
+        score++; document.getElementById('score').textContent=score;
       }
-
-      // ground collision (reset to bottom)
-      if (ball.y > ch - ball.size - 18){
-        ball.y = ch - ball.size - 18;
-        ball.launched = false;
-        ball.vy = 0;
-        // small bounce animation could go here
-      }
+      if(ball.y>ch-ball.size-20){resetBall();}
     }
-
-    // draw ball on top
-    ctx.drawImage(ballImg, ball.x, ball.y, ball.size, ball.size);
-
-    rafId = requestAnimationFrame(gameStep);
+    ctx.drawImage(ballImg,ball.x,ball.y,ball.size,ball.size);
+    raf=requestAnimationFrame(loop);
   }
 
-  /* -------------------------
-     Game lifecycle
-     -------------------------*/
+  function launchBall(){
+    if(!ball.launched){ball.launched=true;ball.vy=-10;}
+  }
+  canvas.addEventListener('click',launchBall);
+  canvas.addEventListener('touchstart',launchBall,{passive:true});
+
   function startGame(){
-    if (imagesLoaded < 2){
-      // wait if images not ready
-      alert('Cargando recursos, espera un momento...');
-      return;
-    }
-    // reset
-    score = 0;
-    timeLeft = 30;
-    document.getElementById('score').textContent = score;
-    document.getElementById('time').textContent = timeLeft;
-
-    resizeCanvas();
-    resetBall();
-    drawStatic();
-
-    // start timer
-    if (gameInterval) clearInterval(gameInterval);
-    gameInterval = setInterval(() => {
-      timeLeft--;
-      document.getElementById('time').textContent = timeLeft;
-      if (timeLeft <= 0){
-        stopGameLoop();
-        saveScoreAndShowBoard();
-      }
-    }, 1000);
-
-    // attach inputs and start animation
-    detachInput();
-    attachInput();
-    if (rafId) cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(gameStep);
+    if(loaded<2){alert('Cargando imágenes...');return;}
+    score=0; timeLeft=30;
+    document.getElementById('score').textContent=score;
+    document.getElementById('time').textContent=timeLeft;
+    resetBall(); if(timer)clearInterval(timer);
+    timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=timeLeft;
+      if(timeLeft<=0)endGame();
+    },1000);
+    if(raf)cancelAnimationFrame(raf); raf=requestAnimationFrame(loop);
   }
 
-  function stopGameLoop(){
-    if (gameInterval) { clearInterval(gameInterval); gameInterval = null; }
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    detachInput();
+  function stopGame(){
+    if(timer)clearInterval(timer);
+    if(raf)cancelAnimationFrame(raf);
   }
 
-  function saveScoreAndShowBoard(){
-    stopGameLoop();
-    const user = localStorage.getItem('usuario') || 'Anónimo';
-    const arr = getStoredScores();
-    arr.push({usuario:user, puntuacion: score, fecha: new Date().toISOString()});
-    arr.sort((a,b)=>b.puntuacion - a.puntuacion);
+  function endGame(){
+    stopGame();
+    const user=localStorage.getItem('usuario')||'Anónimo';
+    const arr=getStoredScores();
+    arr.push({usuario:user,puntuacion:score});
+    arr.sort((a,b)=>b.puntuacion-a.puntuacion);
     saveScores(arr);
-    renderLeaderboard();
     showSection('clasificacion');
   }
 
   function endGameEarly(){
-    // manual end
-    if (confirm('¿Terminar el juego ahora?')) {
-      saveScoreAndShowBoard();
-    }
+    if(confirm('¿Terminar el juego?')) endGame();
   }
 
-  /* -------------------------
-     UI helpers
-     -------------------------*/
   function saveNameAndStart(){
-    const name = document.getElementById('nombreUsuario').value.trim();
-    if (!name){
-      alert('Introduce tu nombre.');
-      return;
-    }
-    localStorage.setItem('usuario', name);
+    const n=document.getElementById('nombreUsuario').value.trim();
+    if(!n){alert('Introduce tu nombre');return;}
+    localStorage.setItem('usuario',n);
     showSection('juego');
     startGame();
   }
 
   function renderLeaderboard(){
-    const list = document.getElementById('leaderboardList');
-    list.innerHTML = '';
-    const scores = getStoredScores();
-    if (scores.length === 0){
-      const li = document.createElement('li'); li.textContent = 'Aún no hay puntuaciones.';
-      list.appendChild(li); return;
-    }
-    scores.forEach((s,i)=>{
-      const li = document.createElement('li');
-      li.innerHTML = `<strong>${i+1}. ${escapeHtml(s.usuario)}</strong> — ${s.puntuacion} pts`;
+    const list=document.getElementById('leaderboardList');
+    list.innerHTML='';
+    const data=getStoredScores();
+    if(!data.length){list.innerHTML='<li>Aún no hay puntuaciones.</li>';return;}
+    data.forEach((s,i)=>{
+      const li=document.createElement('li');
+      li.innerHTML=`${i+1}. <strong>${s.usuario}</strong> — ${s.puntuacion} pts`;
       list.appendChild(li);
     });
   }
 
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
-  }
-
-  /* -------------------------
-     Auto: prefill name if exists
-     -------------------------*/
-  document.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('usuario');
-    if (saved) document.getElementById('nombreUsuario').value = saved;
-    // show the start section by default
+  document.addEventListener('DOMContentLoaded',()=>{
+    const saved=localStorage.getItem('usuario');
+    if(saved)document.getElementById('nombreUsuario').value=saved;
     showSection('inicio');
-    // resize when first load
-    resizeCanvas();
-    // if images loaded earlier call drawStatic
-    if (imagesLoaded === 2) drawStatic();
   });
-
-  // expose some controls for console debugging (optional)
-  window.__game = { startGame, stopGameLoop, saveScoreAndShowBoard, renderLeaderboard };
   </script>
 </body>
 </html>
