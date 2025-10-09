@@ -1,248 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Juego de Baloncesto | Othniel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego de Tiro - Othniel</title>
   <style>
     :root {
-      --bg-light:#f5f5f7; --bg-dark:#111;
-      --text-light:#111; --text-dark:#f5f5f7;
-      --card-light:#fff; --card-dark:#222;
-      --accent:#0078d7;
+      --bg-light: #f5f5f7;
+      --text-light: #1d1d1f;
+      --bg-dark: #1d1d1f;
+      --text-dark: #f5f5f7;
+      --accent: #0071e3;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0;}
     body {
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:var(--bg-light); color:var(--text-light);
-      display:flex; flex-direction:column; align-items:center;
-      min-height:100vh; transition:background .4s,color .4s;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.6s ease, color 0.6s ease;
+      text-align: center;
     }
-    body.dark{ background:var(--bg-dark); color:var(--text-dark); }
 
-    header{ font-weight:600; font-size:1.25rem; padding:28px 0; }
-
-    nav{ display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; justify-content:center; }
-    nav button{
-      background:var(--accent); color:#fff; border:none; padding:10px 16px; border-radius:10px;
-      cursor:pointer; font-weight:600; transition:.25s;
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
     }
-    nav button:hover{ transform:translateY(-3px); background:#005fa3; }
 
-    #darkModeToggle {
-      background:transparent; color:var(--accent); border:2px solid var(--accent);
-      padding:8px 12px; border-radius:10px; font-weight:600;
+    header {
+      padding: 20px;
+      background: var(--accent);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 600;
     }
-    #darkModeToggle:hover{ background:var(--accent); color:#fff; }
 
-    .card {
-      width:92%; max-width:640px; border-radius:18px; padding:26px;
-      background:var(--card-light);
-      box-shadow:0 14px 40px rgba(0,0,0,0.08);
-      transition:background .45s,box-shadow .45s;
-      text-align:center;
+    .toggle-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
     }
-    body.dark .card{ background:var(--card-dark); box-shadow:0 10px 30px rgba(255,255,255,0.05); }
 
-    .hidden{ display:none; }
-
-    input[type="text"] {
-      width:84%; padding:10px; border-radius:10px; border:1px solid #cfcfcf; font-size:14px; margin-top:10px;
+    .toggle-switch {
+      width: 50px;
+      height: 25px;
+      background: #ccc;
+      border-radius: 25px;
+      position: relative;
+      transition: background 0.3s;
+      margin-left: 8px;
     }
-    .btn{
-      display:inline-block; margin-top:14px; padding:10px 16px; background:var(--accent); color:#fff;
-      border:none; border-radius:12px; cursor:pointer; font-weight:700; transition:.2s;
+
+    .toggle-switch::after {
+      content: "";
+      width: 21px;
+      height: 21px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: all 0.3s;
     }
-    .btn:hover{ transform:translateY(-3px); background:#005fa3; }
 
-    .canvas-wrap{ width:100%; height:420px; display:flex; justify-content:center; align-items:center; margin-top:12px; }
-    canvas { width:100%; max-width:560px; height:100%; border-radius:12px; background:transparent; display:block; }
+    body.dark-mode .toggle-switch {
+      background: var(--accent);
+    }
 
-    ul{ list-style:none; padding:0; text-align:left; margin:12px 0; }
-    li{ padding:8px 0; border-bottom:1px dashed rgba(0,0,0,0.05); }
+    body.dark-mode .toggle-switch::after {
+      left: 27px;
+    }
 
-    footer{ margin-top:auto; padding:18px 0; opacity:0.7; }
+    canvas {
+      background: var(--bg-light);
+      display: block;
+      margin: 50px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: background 0.6s ease;
+    }
+
+    body.dark-mode canvas {
+      background: #2c2c2e;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    #score {
+      font-size: 1.2rem;
+      margin-top: 15px;
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #005bb5;
+    }
   </style>
 </head>
+
 <body>
-  <header>🏀 Juego de Baloncesto</header>
-  <nav>
-    <button onclick="showSection('inicio')">Inicio</button>
-    <button onclick="showSection('juego')">Jugar</button>
-    <button onclick="showSection('clasificacion')">Clasificación</button>
-    <button id="darkModeToggle">Modo Oscuro</button>
-  </nav>
+  <header>🏀 Juego de Tiro de Baloncesto</header>
 
-  <!-- Inicio -->
-  <section id="inicio" class="card">
-    <h2>Bienvenido</h2>
-    <p>Introduce tu nombre y presiona Guardar.</p>
-    <input id="nombreUsuario" type="text" placeholder="Tu nombre..." />
-    <div><button class="btn" onclick="saveNameAndStart()">Guardar</button></div>
-  </section>
+  <div class="toggle-container" id="darkModeToggle">
+    🌞
+    <div class="toggle-switch"></div>
+  </div>
 
-  <!-- Juego -->
-  <section id="juego" class="card hidden">
-    <h2>Haz clic o toca para lanzar</h2>
-    <p>Puntuación: <strong id="score">0</strong> • Tiempo: <strong id="time">30</strong>s</p>
-    <div class="canvas-wrap"><canvas id="court"></canvas></div>
-    <div><button class="btn" onclick="endGameEarly()">Terminar juego</button></div>
-  </section>
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
+  <div id="score">Puntaje: 0</div>
+  <button onclick="resetGame()">Reiniciar</button>
 
-  <!-- Clasificación -->
-  <section id="clasificacion" class="card hidden">
-    <h2>Clasificación (Top 10)</h2>
-    <ul id="leaderboardList"></ul>
-    <div>
-      <button class="btn" onclick="showSection('juego'); startGame()">Jugar otra vez</button>
-      <button class="btn" onclick="showSection('inicio')">Inicio</button>
-    </div>
-  </section>
-
-  <footer>© 2025 Othniel Yeboah</footer>
+  <footer>© 2025 Othniel Yeboah | Juego de práctica</footer>
 
   <script>
-  // Dark mode
-  const darkBtn = document.getElementById('darkModeToggle');
-  darkBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    darkBtn.textContent = document.body.classList.contains('dark') ? 'Modo Claro' : 'Modo Oscuro';
-  });
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let score = 0;
+    let ball = { x: 200, y: 450, radius: 12, dy: 0, shot: false };
+    const hoop = { x: 200, y: 120, radius: 35 };
+    const gravity = 0.4;
 
-  function showSection(id){
-    document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-    if (id!=='juego') stopGame();
-    if (id==='clasificacion') renderLeaderboard();
-  }
-
-  function getStoredScores(){return JSON.parse(localStorage.getItem('puntajes')||'[]');}
-  function saveScores(arr){localStorage.setItem('puntajes',JSON.stringify(arr.slice(0,10)));}
-
-  const canvas=document.getElementById('court');
-  const ctx=canvas.getContext('2d');
-  let DPR=window.devicePixelRatio||1;
-  function resizeCanvas(){
-    const wrap=canvas.parentElement;
-    canvas.width=wrap.clientWidth*DPR;
-    canvas.height=wrap.clientHeight*DPR;
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-  }
-  window.addEventListener('resize',resizeCanvas);
-  resizeCanvas();
-
-  // ✅ Online images (no local assets needed)
-  const ballImg=new Image();
-  const hoopImg=new Image();
-  ballImg.src='https://raw.githubusercontent.com/othnielyeboah/test-assets/main/ball.png';
-  hoopImg.src='https://raw.githubusercontent.com/othnielyeboah/test-assets/main/hoop.png';
-  let loaded=0;
-  [ballImg,hoopImg].forEach(img=>img.onload=()=>{loaded++;if(loaded===2){drawStatic();}});
-
-  let score=0,timeLeft=30,timer=null,raf=null;
-  const ball={x:0,y:0,size:60,vy:0,launched:false};
-  function resetBall(){
-    const cw=canvas.width/DPR,ch=canvas.height/DPR;
-    ball.size=Math.min(80,Math.max(40,cw*0.12));
-    ball.x=cw/2-ball.size/2; ball.y=ch-ball.size-20;
-    ball.vy=0; ball.launched=false;
-  }
-
-  function drawStatic(){
-    resizeCanvas(); resetBall();
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawScene();
-  }
-
-  function drawScene(){
-    const cw=canvas.width/DPR,ch=canvas.height/DPR;
-    const hoopW=cw*0.3,hoopH=hoopW*0.45,hoopX=cw/2-hoopW/2,hoopY=ch*0.1;
-    ctx.drawImage(hoopImg,hoopX,hoopY,hoopW,hoopH);
-    if(ballImg.complete) ctx.drawImage(ballImg,ball.x,ball.y,ball.size,ball.size);
-    else{ctx.fillStyle='orange';ctx.beginPath();ctx.arc(ball.x+ball.size/2,ball.y+ball.size/2,ball.size/2,0,Math.PI*2);ctx.fill();}
-  }
-
-  function loop(){
-    const cw=canvas.width/DPR,ch=canvas.height/DPR;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const hoopW=cw*0.3,hoopH=hoopW*0.45,hoopX=cw/2-hoopW/2,hoopY=ch*0.1;
-    ctx.drawImage(hoopImg,hoopX,hoopY,hoopW,hoopH);
-
-    if(ball.launched){
-      ball.y+=ball.vy; ball.vy+=0.45;
-      const hoopMidY=hoopY+hoopH*0.6;
-      if(ball.y+ball.size/2>hoopMidY && ball.y+ball.size/2<hoopMidY+5 && ball.vy>0){
-        score++; document.getElementById('score').textContent=score;
-      }
-      if(ball.y>ch-ball.size-20){resetBall();}
+    function drawHoop() {
+      ctx.beginPath();
+      ctx.strokeStyle = "#ff3b30";
+      ctx.lineWidth = 5;
+      ctx.arc(hoop.x, hoop.y, hoop.radius, 0, Math.PI, true);
+      ctx.stroke();
     }
-    ctx.drawImage(ballImg,ball.x,ball.y,ball.size,ball.size);
-    raf=requestAnimationFrame(loop);
-  }
 
-  function launchBall(){
-    if(!ball.launched){ball.launched=true;ball.vy=-10;}
-  }
-  canvas.addEventListener('click',launchBall);
-  canvas.addEventListener('touchstart',launchBall,{passive:true});
+    function drawBall() {
+      ctx.beginPath();
+      ctx.fillStyle = "#ff9500";
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
-  function startGame(){
-    if(loaded<2){alert('Cargando imágenes...');return;}
-    score=0; timeLeft=30;
-    document.getElementById('score').textContent=score;
-    document.getElementById('time').textContent=timeLeft;
-    resetBall(); if(timer)clearInterval(timer);
-    timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=timeLeft;
-      if(timeLeft<=0)endGame();
-    },1000);
-    if(raf)cancelAnimationFrame(raf); raf=requestAnimationFrame(loop);
-  }
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawHoop();
+      drawBall();
 
-  function stopGame(){
-    if(timer)clearInterval(timer);
-    if(raf)cancelAnimationFrame(raf);
-  }
+      if (ball.shot) {
+        ball.y += ball.dy;
+        ball.dy += gravity;
 
-  function endGame(){
-    stopGame();
-    const user=localStorage.getItem('usuario')||'Anónimo';
-    const arr=getStoredScores();
-    arr.push({usuario:user,puntuacion:score});
-    arr.sort((a,b)=>b.puntuacion-a.puntuacion);
-    saveScores(arr);
-    showSection('clasificacion');
-  }
+        if (ball.y > canvas.height - ball.radius) {
+          ball.y = canvas.height - ball.radius;
+          ball.shot = false;
+        }
 
-  function endGameEarly(){
-    if(confirm('¿Terminar el juego?')) endGame();
-  }
+        // Detectar si la pelota pasa por el aro
+        if (
+          ball.y < hoop.y + 5 &&
+          ball.y > hoop.y - 10 &&
+          Math.abs(ball.x - hoop.x) < hoop.radius / 2
+        ) {
+          score++;
+          document.getElementById("score").innerText = "Puntaje: " + score;
+          ball.shot = false;
+        }
+      }
 
-  function saveNameAndStart(){
-    const n=document.getElementById('nombreUsuario').value.trim();
-    if(!n){alert('Introduce tu nombre');return;}
-    localStorage.setItem('usuario',n);
-    showSection('juego');
-    startGame();
-  }
+      requestAnimationFrame(update);
+    }
 
-  function renderLeaderboard(){
-    const list=document.getElementById('leaderboardList');
-    list.innerHTML='';
-    const data=getStoredScores();
-    if(!data.length){list.innerHTML='<li>Aún no hay puntuaciones.</li>';return;}
-    data.forEach((s,i)=>{
-      const li=document.createElement('li');
-      li.innerHTML=`${i+1}. <strong>${s.usuario}</strong> — ${s.puntuacion} pts`;
-      list.appendChild(li);
+    canvas.addEventListener("click", (e) => {
+      if (!ball.shot) {
+        ball.dy = -10;
+        ball.shot = true;
+      }
     });
-  }
 
-  document.addEventListener('DOMContentLoaded',()=>{
-    const saved=localStorage.getItem('usuario');
-    if(saved)document.getElementById('nombreUsuario').value=saved;
-    showSection('inicio');
-  });
+    function resetGame() {
+      score = 0;
+      document.getElementById("score").innerText = "Puntaje: 0";
+    }
+
+    // Dark mode toggle
+    const toggle = document.getElementById("darkModeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+    });
+
+    update();
   </script>
 </body>
 </html>
