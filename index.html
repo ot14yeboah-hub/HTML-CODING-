@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Juego de Tiro - Othniel</title>
+  <title>Página Personal - Othniel Yeboah</title>
+
   <style>
     :root {
       --bg-light: #f5f5f7;
@@ -22,6 +23,7 @@
       color: var(--text-light);
       transition: background-color 0.6s ease, color 0.6s ease;
       text-align: center;
+      scroll-behavior: smooth;
     }
 
     body.dark-mode {
@@ -36,10 +38,53 @@
       font-size: 1.5rem;
       font-weight: 600;
       letter-spacing: 0.5px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     }
 
-    /* Dark Mode Toggle */
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #333;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 14px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    nav button:hover {
+      background: var(--accent);
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: 30px auto;
+      background: var(--card-light);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: background 0.6s ease;
+    }
+
+    body.dark-mode section {
+      background: var(--card-dark);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--accent);
+      color: white;
+      margin-top: 40px;
+    }
+
+    /* Dark mode toggle */
     .toggle-container {
       position: fixed;
       top: 20px;
@@ -80,13 +125,13 @@
       left: 27px;
     }
 
-    /* Game area */
+    /* Game Canvas */
     canvas {
       display: block;
-      margin: 60px auto;
+      margin: 30px auto;
       background: var(--card-light);
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       transition: background 0.6s ease;
     }
 
@@ -99,7 +144,7 @@
       margin-top: 10px;
     }
 
-    button {
+    button.action {
       background: var(--accent);
       color: white;
       border: none;
@@ -110,39 +155,90 @@
       margin-top: 10px;
     }
 
-    button:hover {
+    button.action:hover {
       background: #005bb5;
-    }
-
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      opacity: 0.8;
-      padding-bottom: 30px;
     }
   </style>
 </head>
+
 <body>
-  <header>🏀 Juego de Tiro de Baloncesto</header>
+  <header>🌐 Página Personal de Othniel Yeboah</header>
 
   <div class="toggle-container" id="darkModeToggle">
     🌞
     <div class="toggle-switch"></div>
   </div>
 
-  <canvas id="gameCanvas" width="400" height="500"></canvas>
+  <nav>
+    <button onclick="showSection('inicio')">Inicio</button>
+    <button onclick="showSection('sobre-mi')">Sobre mí</button>
+    <button onclick="showSection('intereses')">Mis intereses</button>
+    <button onclick="showSection('juego')">Juego de Tiro 🏀</button>
+    <button onclick="showSection('contacto')">Contacto</button>
+  </nav>
 
-  <div id="score">Puntaje: 0</div>
-  <button onclick="resetGame()">Reiniciar</button>
+  <main>
+    <section id="inicio">
+      <h2>Inicio</h2>
+      <p>Bienvenido a mi sitio personal. Explora mis intereses y juega mi minijuego de baloncesto.</p>
+    </section>
 
-  <footer>© 2025 Othniel Yeboah | Juego de práctica</footer>
+    <section id="sobre-mi" style="display:none;">
+      <h2>Sobre mí</h2>
+      <p>Soy Othniel Yeboah, estudiante y atleta. Me apasionan el baloncesto, la programación y la superación personal.</p>
+    </section>
+
+    <section id="intereses" style="display:none;">
+      <h2>Mis intereses</h2>
+      <ul style="list-style:none; padding:0;">
+        <li>🏀 Baloncesto</li>
+        <li>💻 Programación</li>
+        <li>🎸 Música</li>
+        <li>⚡ Tecnología</li>
+      </ul>
+    </section>
+
+    <!-- GAME SECTION -->
+    <section id="juego" style="display:none;">
+      <h2>Juego de Tiro</h2>
+      <canvas id="gameCanvas" width="400" height="500"></canvas>
+      <div id="score">Puntaje: 0</div>
+      <button class="action" onclick="resetGame()">Reiniciar</button>
+    </section>
+
+    <section id="contacto" style="display:none;">
+      <h2>Contacto</h2>
+      <form>
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre..."><br><br>
+
+        <label for="correo">Correo electrónico:</label><br>
+        <input type="email" id="correo" name="correo" placeholder="Tu correo..."><br><br>
+
+        <button class="action" type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>© 2025 Othniel Yeboah | Todos los derechos reservados</footer>
 
   <script>
+    // SECTION SWITCHER
+    function showSection(id) {
+      document.querySelectorAll("main section").forEach(s => s.style.display = "none");
+      document.getElementById(id).style.display = "block";
+    }
+
+    // DARK MODE
+    const toggle = document.getElementById("darkModeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+    });
+
+    // GAME LOGIC
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     let score = 0;
-
-    // Ball and hoop properties
     let ball = { x: 200, y: 460, radius: 12, dy: 0, shot: false };
     const hoop = { x: 200, y: 130, radius: 40 };
     const gravity = 0.5;
@@ -155,7 +251,6 @@
       ctx.stroke();
       ctx.closePath();
 
-      // Backboard line
       ctx.beginPath();
       ctx.moveTo(hoop.x - 50, hoop.y - 20);
       ctx.lineTo(hoop.x + 50, hoop.y - 20);
@@ -183,51 +278,4 @@
 
       if (ball.shot) {
         ball.y += ball.dy;
-        ball.dy += gravity;
-
-        if (ball.y >= 460) {
-          ball.y = 460;
-          ball.dy = 0;
-          ball.shot = false;
-        }
-
-        // Detect hoop pass
-        if (
-          ball.y < hoop.y + 5 &&
-          ball.y > hoop.y - 10 &&
-          Math.abs(ball.x - hoop.x) < hoop.radius / 2
-        ) {
-          score++;
-          document.getElementById("score").textContent = "Puntaje: " + score;
-          ball.shot = false;
-        }
-      }
-
-      requestAnimationFrame(update);
-    }
-
-    canvas.addEventListener("click", () => {
-      if (!ball.shot) {
-        ball.dy = -12;
-        ball.shot = true;
-      }
-    });
-
-    function resetGame() {
-      score = 0;
-      document.getElementById("score").textContent = "Puntaje: 0";
-      ball.y = 460;
-      ball.dy = 0;
-      ball.shot = false;
-    }
-
-    // Dark Mode toggle
-    const toggle = document.getElementById("darkModeToggle");
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-    });
-
-    update();
-  </script>
-</body>
-</html>
+        ball.dy += gravi
