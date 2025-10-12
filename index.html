@@ -6,7 +6,7 @@
   <title>OT ZERO — Juego de Español</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#fff;color:#0a0a0a;line-height:1.5;transition:background .6s,color .6s}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#fff;color:#0a0a0a;line-height:1.5;}
     header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 8%;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.04);z-index:100}
     .brand{display:flex;gap:12px;align-items:center}
     .app-icon{width:56px;height:56px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.6px;border:1px solid rgba(0,0,0,.06);box-shadow:0 6px 20px rgba(10,10,10,.06)}
@@ -22,12 +22,12 @@
     .btn:hover{transform:translateY(-3px)}
     .download{background:#000;color:#fff;border:none}
     .screenshot{width:100%;max-width:420px;border:1px solid rgba(0,0,0,.06);border-radius:22px;padding:18px;background:linear-gradient(#fff,#fbfbfb);box-shadow:0 18px 40px rgba(10,10,10,.06)}
-    .phone-mock{width:100%;height:720px;display:flex;align-items:center;justify-content:center;border-radius:18px;background:linear-gradient(180deg,#fff,#f6f6f6);color:rgba(0,0,0,.5)}
     footer{padding:40px 8%;border-top:1px solid rgba(0,0,0,.04);color:rgba(0,0,0,.6)}
     #gameContainer{display:none;text-align:center;margin-top:20px}
     #gameCanvas{border:2px solid #000;border-radius:12px;display:block;margin:20px auto;background:#fefefe}
     .game-controls{display:flex;justify-content:center;gap:10px;margin-top:20px}
-    #message{font-size:1.4rem;font-weight:700;margin-top:10px;color:#28a745;min-height:30px}
+    #message{font-size:1.4rem;font-weight:700;margin-top:10px;min-height:30px}
+    #wordDisplay{font-size:1.6rem;font-weight:700;margin-top:10px;}
   </style>
 </head>
 <body>
@@ -54,7 +54,7 @@
         <div class="title">¡Hola, niños! Bienvenidos a OT ZERO</div>
         <p class="tagline">Hoy vamos a aprender palabras en español. Mira, escucha y repite. ¡Será muy divertido!</p>
         <div style="margin-top:16px;display:flex;gap:10px">
-          <button class="btn download">Descargar</button>
+          <button class="btn download" onclick="stopGame()">Descargar</button>
           <button class="btn" onclick="showGame()">Jugar ahora</button>
         </div>
       </div>
@@ -76,6 +76,7 @@
     <section id="juego">
       <h2>Juego interactivo</h2>
       <div id="gameContainer">
+        <div id="wordDisplay">Color: rojo</div>
         <canvas id="gameCanvas" width="500" height="300"></canvas>
         <div id="message"></div>
         <div class="game-controls">
@@ -102,9 +103,18 @@
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    let player = { x: 220, y: 250, size: 40, color: '#007bff' };
-    let star = { x: Math.random() * 460, y: 0, size: 30, color: '#FFD700', speed: 2 };
+    const colors = [
+      {name:'rojo', code:'#ff4d4d'},
+      {name:'azul', code:'#4d79ff'},
+      {name:'verde', code:'#33cc33'},
+      {name:'amarillo', code:'#ffdb4d'}
+    ];
+
+    let player = { x: 220, y: 250, size: 40, color: '#000' };
+    let fallingColor = { x: Math.random() * 460, y: 0, size: 40, color: colors[0].code, name:'rojo', speed: 2 };
+    let currentWord = colors[Math.floor(Math.random() * colors.length)];
     let messageBox = document.getElementById('message');
+    let wordDisplay = document.getElementById('wordDisplay');
     let gameRunning = false;
 
     function drawPlayer(){
@@ -112,17 +122,15 @@
       ctx.fillRect(player.x, player.y, player.size, player.size);
     }
 
-    function drawStar(){
-      ctx.fillStyle = star.color;
-      ctx.beginPath();
-      ctx.arc(star.x + star.size/2, star.y + star.size/2, star.size/2, 0, Math.PI*2);
-      ctx.fill();
+    function drawColorBox(){
+      ctx.fillStyle = fallingColor.color;
+      ctx.fillRect(fallingColor.x, fallingColor.y, fallingColor.size, fallingColor.size);
     }
 
     function drawGame(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
       drawPlayer();
-      drawStar();
+      drawColorBox();
     }
 
     function moveLeft(){
@@ -137,21 +145,29 @@
 
     function updateGame(){
       if(!gameRunning) return;
-      star.y += star.speed;
-      if(star.y + star.size > player.y && star.x + star.size > player.x && star.x < player.x + player.size){
-        messageBox.textContent = '¡Muy bien! 🌟';
-        resetStar();
+      fallingColor.y += fallingColor.speed;
+      if(fallingColor.y + fallingColor.size > player.y && fallingColor.x + fallingColor.size > player.x && fallingColor.x < player.x + player.size){
+        if(fallingColor.name === currentWord.name){
+          messageBox.textContent = '¡Muy bien! 🌟';
+        } else {
+          messageBox.textContent = 'Intenta otra vez ❌';
+        }
+        resetColor();
       }
-      if(star.y > canvas.height){
-        star.y = 0; star.x = Math.random() * 460;
+      if(fallingColor.y > canvas.height){
+        resetColor();
       }
       drawGame();
       requestAnimationFrame(updateGame);
     }
 
-    function resetStar(){
-      star.y = 0;
-      star.x = Math.random() * 460;
+    function resetColor(){
+      fallingColor.y = 0;
+      fallingColor.x = Math.random() * 460;
+      fallingColor = colors[Math.floor(Math.random() * colors.length)];
+      fallingColor = { ...fallingColor, x: Math.random() * 460, y: 0, size: 40, speed: 2 };
+      currentWord = colors[Math.floor(Math.random() * colors.length)];
+      wordDisplay.textContent = 'Color: ' + currentWord.name;
     }
 
     function showGame(){
@@ -162,6 +178,11 @@
         gameRunning = true;
         updateGame();
       }
+    }
+
+    function stopGame(){
+      gameRunning = false;
+      messageBox.textContent = '⛔ Juego detenido';
     }
 
     document.addEventListener('keydown', (e)=>{
