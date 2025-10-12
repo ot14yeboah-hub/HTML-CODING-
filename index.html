@@ -21,13 +21,15 @@
     .btn{padding:12px 20px;border-radius:14px;border:1px solid rgba(0,0,0,.08);background:#fff;cursor:pointer;font-weight:600;transition:transform .18s}
     .btn:hover{transform:translateY(-3px)}
     .download{background:#000;color:#fff;border:none}
-    .screenshot{width:100%;max-width:420px;border:1px solid rgba(0,0,0,.06);border-radius:22px;padding:18px;background:linear-gradient(#fff,#fbfbfb);box-shadow:0 18px 40px rgba(10,10,10,.06)}
+    .screenshot{width:100%;max-width:420px;border:1px solid rgba(0,0,0,.06);border-radius:22px;padding:18px;background:linear-gradient(#fff,#fbfbfb);box-shadow:0 18px 40px rgba(10,10,10,.06);text-align:center}
+    .logo-img{width:150px;height:auto;}
     footer{padding:40px 8%;border-top:1px solid rgba(0,0,0,.04);color:rgba(0,0,0,.6)}
     #gameContainer{display:none;text-align:center;margin-top:20px}
     #gameCanvas{border:2px solid #000;border-radius:12px;display:block;margin:20px auto;background:#fefefe}
     .game-controls{display:flex;justify-content:center;gap:10px;margin-top:20px}
     #message{font-size:1.4rem;font-weight:700;margin-top:10px;min-height:30px}
     #wordDisplay{font-size:1.6rem;font-weight:700;margin-top:10px;}
+    #score{font-size:1.2rem;font-weight:600;margin-top:10px;}
   </style>
 </head>
 <body>
@@ -59,24 +61,25 @@
         </div>
       </div>
       <div class="screenshot">
-        <div class="phone-mock">Imagen del juego aquí</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Example.svg" alt="OT ZERO logo" class="logo-img" />
       </div>
     </section>
 
     <section id="sobre">
       <h2>Acerca del juego</h2>
-      <p>Este juego te enseña palabras en español. Aprenderemos colores. ¡Jugarás y aprenderás al mismo tiempo!</p>
+      <p>Este juego te enseña palabras en español. Aprenderemos colores, animales y números. ¡Jugarás y aprenderás al mismo tiempo!</p>
     </section>
 
     <section id="como">
       <h2>Cómo jugamos</h2>
-      <p>Este juego te enseña a ser rápido y aprender palabras en español como los colores.!</p>
+      <p>Toca las imágenes y escucha las palabras. Repite conmigo: perro, gato, sol. Si lo haces bien, ¡ganas una estrella!</p>
     </section>
 
     <section id="juego">
       <h2>Juego interactivo</h2>
       <div id="gameContainer">
         <div id="wordDisplay">Color: rojo</div>
+        <div id="score">Puntuación: 0</div>
         <canvas id="gameCanvas" width="500" height="300"></canvas>
         <div id="message"></div>
         <div class="game-controls">
@@ -89,14 +92,14 @@
     <section id="referencias">
       <h2>Referencias</h2>
       <p>Puedes mirar palabras aquí: <a href="https://www.spanishdict.com" target="_blank">SpanishDictionary.com</a></p>
-      <p style="color:rgba(0,0,0,.55)">Hace frio</p>
+      <p style="color:rgba(0,0,0,.55)">*Nota:* Usa tus propias palabras y practica mucho. ¡Tú puedes!</p>
     </section>
   </main>
 
   <footer>
     <div style="display:flex;justify-content:space-between;flex-wrap:wrap">
       <div>OT ZERO</div>
-      <div>App de OT ZERO — Español fácil</div>
+      <div>App de práctica — Español fácil</div>
     </div>
   </footer>
 
@@ -115,7 +118,9 @@
     let currentWord = colors[Math.floor(Math.random() * colors.length)];
     let messageBox = document.getElementById('message');
     let wordDisplay = document.getElementById('wordDisplay');
+    let scoreDisplay = document.getElementById('score');
     let gameRunning = false;
+    let score = 0;
 
     function drawPlayer(){
       ctx.fillStyle = player.color;
@@ -148,13 +153,16 @@
       fallingColor.y += fallingColor.speed;
       if(fallingColor.y + fallingColor.size > player.y && fallingColor.x + fallingColor.size > player.x && fallingColor.x < player.x + player.size){
         if(fallingColor.name === currentWord.name){
+          score++;
           messageBox.textContent = '¡Muy bien! 🌟';
         } else {
           messageBox.textContent = 'Intenta otra vez ❌';
         }
+        scoreDisplay.textContent = 'Puntuación: ' + score;
         resetColor();
       }
       if(fallingColor.y > canvas.height){
+        messageBox.textContent = 'Fallaste ❌';
         resetColor();
       }
       drawGame();
@@ -162,10 +170,8 @@
     }
 
     function resetColor(){
-      fallingColor.y = 0;
-      fallingColor.x = Math.random() * 460;
-      fallingColor = colors[Math.floor(Math.random() * colors.length)];
-      fallingColor = { ...fallingColor, x: Math.random() * 460, y: 0, size: 40, speed: 2 };
+      const nextColor = colors[Math.floor(Math.random() * colors.length)];
+      fallingColor = { ...nextColor, x: Math.random() * 460, y: 0, size: 40, speed: 2 };
       currentWord = colors[Math.floor(Math.random() * colors.length)];
       wordDisplay.textContent = 'Color: ' + currentWord.name;
     }
@@ -182,7 +188,7 @@
 
     function stopGame(){
       gameRunning = false;
-      messageBox.textContent = '⛔ Juego cerrado';
+      messageBox.textContent = '⛔ Juego detenido';
     }
 
     document.addEventListener('keydown', (e)=>{
