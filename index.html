@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OT ZERO | Juego para Aprender Español</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OT ZERO | Juego de Aprendizaje</title>
   <style>
     :root {
       --bg-light: #f5f5f7;
@@ -15,151 +15,215 @@
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Poppins', sans-serif;
       background-color: var(--bg-light);
       color: var(--text-light);
-      transition: background-color 0.4s, color 0.4s;
-    }
-
-    body.dark {
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
+      transition: background-color 0.3s, color 0.3s;
     }
 
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 20px 40px;
-      border-bottom: 1px solid #ccc;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background-color: transparent;
     }
 
-    #appIcon {
-      width: 70px;
-      height: 70px;
-      background-color: white;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon {
+      width: 60px;
+      height: 60px;
+      background: white;
       border-radius: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 14px;
       color: #111;
+      font-size: 1.1rem;
     }
 
-    .toggle {
-      cursor: pointer;
-      background-color: transparent;
-      border: 1px solid var(--text-light);
-      border-radius: 8px;
-      padding: 6px 12px;
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
       color: var(--text-light);
-      transition: 0.3s;
+      font-weight: 500;
+      transition: color 0.2s;
     }
 
-    body.dark .toggle {
-      border-color: var(--text-dark);
-      color: var(--text-dark);
+    nav a:hover {
+      color: var(--accent);
     }
 
-    section {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 20px;
+    .hero {
       text-align: center;
-      animation: fadeIn 0.6s ease forwards;
+      padding: 5rem 2rem;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
     }
 
-    h1, h2 {
-      margin-bottom: 10px;
+    .hero p {
+      font-size: 1.2rem;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto 2rem;
     }
 
     .btn {
       display: inline-block;
+      padding: 0.8rem 1.8rem;
+      border-radius: 12px;
       background-color: var(--accent);
       color: white;
-      padding: 12px 24px;
-      border-radius: 10px;
       text-decoration: none;
-      margin-top: 20px;
-      transition: background 0.3s;
+      font-weight: 500;
+      transition: 0.3s;
     }
 
     .btn:hover {
-      background-color: #005ecb;
+      opacity: 0.9;
+    }
+
+    section {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .feature h3 {
+      margin-bottom: 1rem;
     }
 
     footer {
-      margin-top: 60px;
-      padding: 20px;
       text-align: center;
-      font-size: 14px;
-      border-top: 1px solid #ccc;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #666;
     }
 
-    body.dark footer {
-      border-top-color: #333;
+    .dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .dark-mode .feature {
+      background-color: #1c1c1e;
+      color: var(--text-dark);
+    }
+
+    .toggle-btn {
+      background: none;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 0.4rem 0.8rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .toggle-btn:hover {
+      background: var(--accent);
+      color: white;
     }
   </style>
 </head>
 <body>
   <header>
-    <div id="appIcon">OT ZERO</div>
-    <button class="toggle" id="modeToggle">🌙 / ☀️</button>
+    <div class="logo">
+      <div class="icon">OT ZERO</div>
+      <h2>OT ZERO</h2>
+    </div>
+    <nav>
+      <a href="#sobre">Sobre</a>
+      <a href="#como">Cómo Funciona</a>
+      <a href="#caracteristicas">Características</a>
+      <a href="#referencias">Referencias</a>
+      <button class="toggle-btn" onclick="toggleMode()">Modo Oscuro</button>
+    </nav>
   </header>
 
-  <section id="hero">
-    <h1>OT ZERO</h1>
-    <p>Un juego fácil para aprender español.</p>
-    <a href="#" class="btn">Descargar</a>
+  <section class="hero">
+    <h1>Bienvenido a OT ZERO</h1>
+    <p>Una vista previa del juego para aprender español de manera fácil y divertida.</p>
+    <a href="#sobre" class="btn">Explorar</a>
   </section>
 
   <section id="sobre">
-    <h2>Sobre la app</h2>
-    <p>Mi app se llama OT ZERO. Es un juego para aprender español. Es muy fácil y divertido.</p>
+    <h2>Sobre la App</h2>
+    <p>OT ZERO es una aplicación diseñada para enseñar palabras en español de una forma divertida, simple y visual. Aprende mientras juegas y mejora cada día.</p>
   </section>
 
   <section id="como">
-    <h2>Cómo funciona</h2>
-    <p>El juego tiene colores y palabras. Yo toco la palabra correcta. Si gano, escucho música.</p>
+    <h2>Cómo Funciona</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>Juega</h3>
+        <p>Toca las palabras correctas y gana puntos. Aprende español mientras te diviertes.</p>
+      </div>
+      <div class="feature">
+        <h3>Escucha</h3>
+        <p>Escucha cómo se dicen las palabras y repite para mejorar tu pronunciación.</p>
+      </div>
+      <div class="feature">
+        <h3>Avanza</h3>
+        <p>Sube de nivel y gana estrellas mientras aprendes nuevas palabras.</p>
+      </div>
+    </div>
   </section>
 
-  <section id="features">
-    <h2>Características principales</h2>
-    <ul style="list-style:none; padding:0;">
-      <li>🌟 Hay muchos niveles.</li>
-      <li>⭐ Hay puntos y estrellas.</li>
-      <li>🎮 Puedo jugar con amigos.</li>
-    </ul>
+  <section id="caracteristicas">
+    <h2>Características Principales</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>Modo Fácil</h3>
+        <p>Ideal para principiantes que están empezando a aprender español.</p>
+      </div>
+      <div class="feature">
+        <h3>Colores y Palabras</h3>
+        <p>Aprende los colores, objetos y animales más comunes con juegos interactivos.</p>
+      </div>
+      <div class="feature">
+        <h3>Puntos y Logros</h3>
+        <p>Gana puntos y desbloquea logros al completar cada desafío.</p>
+      </div>
+    </div>
   </section>
 
   <section id="referencias">
     <h2>Referencias</h2>
-    <p>Usé el sitio <a href="https://www.spanishdict.com" target="_blank">SpanishDictionary.com</a> para practicar palabras.</p>
+    <a href="https://www.spanishdict.com" target="_blank" class="btn">Visita SpanishDictionary.com</a>
   </section>
 
   <footer>
-    <p>© 2025 OT ZERO — Juego educativo para principiantes.</p>
+    <p>© 2025 OT ZERO. Todos los derechos reservados.</p>
   </footer>
 
   <script>
-    const toggle = document.getElementById('modeToggle');
-    const body = document.body;
-
-    if(localStorage.getItem('darkMode') === 'true') {
-      body.classList.add('dark');
+    function toggleMode() {
+      document.body.classList.toggle('dark-mode');
     }
-
-    toggle.addEventListener('click', () => {
-      body.classList.toggle('dark');
-      localStorage.setItem('darkMode', body.classList.contains('dark'));
-    });
   </script>
 </body>
 </html>
