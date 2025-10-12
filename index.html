@@ -114,8 +114,8 @@
     ];
 
     let player = { x: 220, y: 250, size: 40, color: '#000' };
-    let fallingColor = { x: Math.random() * 460, y: 0, size: 40, color: colors[0].code, name:'rojo', speed: 2 };
     let currentWord = colors[Math.floor(Math.random() * colors.length)];
+    let fallingColor = { ...currentWord, x: Math.random() * 460, y: 0, size: 40, speed: 2 };
     let messageBox = document.getElementById('message');
     let wordDisplay = document.getElementById('wordDisplay');
     let scoreDisplay = document.getElementById('score');
@@ -128,7 +128,7 @@
     }
 
     function drawColorBox(){
-      ctx.fillStyle = fallingColor.color;
+      ctx.fillStyle = fallingColor.code;
       ctx.fillRect(fallingColor.x, fallingColor.y, fallingColor.size, fallingColor.size);
     }
 
@@ -170,10 +170,15 @@
     }
 
     function resetColor(){
-      const nextColor = colors[Math.floor(Math.random() * colors.length)];
-      fallingColor = { ...nextColor, x: Math.random() * 460, y: 0, size: 40, speed: 2 };
       currentWord = colors[Math.floor(Math.random() * colors.length)];
       wordDisplay.textContent = 'Color: ' + currentWord.name;
+      fallingColor = { 
+        ...currentWord, 
+        x: Math.random() * 460, 
+        y: 0, 
+        size: 40, 
+        speed: 2 
+      };
     }
 
     function showGame(){
