@@ -1,200 +1,173 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OT ZERO — Juego de Español</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OT ZERO | Juego de Colores</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#fff;color:#0a0a0a;line-height:1.5;}
-    header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 8%;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.04);z-index:100}
-    .brand{display:flex;gap:12px;align-items:center}
-    .app-icon{width:56px;height:56px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.6px;border:1px solid rgba(0,0,0,.06);box-shadow:0 6px 20px rgba(10,10,10,.06)}
-    nav{display:flex;gap:18px}
-    nav a{color:inherit;text-decoration:none;font-weight:500;position:relative}
-    nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:currentColor;border-radius:2px}
-    main{padding-top:110px}
-    section{padding:70px 8%}
-    .hero{display:grid;grid-template-columns:360px 1fr;gap:40px;align-items:center}
-    .title{font-size:2.2rem;font-weight:700;margin-bottom:10px}
-    .tagline{max-width:700px;color:rgba(0,0,0,.7)}
-    .btn{padding:12px 20px;border-radius:14px;border:1px solid rgba(0,0,0,.08);background:#fff;cursor:pointer;font-weight:600;transition:transform .18s}
-    .btn:hover{transform:translateY(-3px)}
-    .download{background:#000;color:#fff;border:none}
-    .screenshot{width:100%;max-width:420px;border:1px solid rgba(0,0,0,.06);border-radius:22px;padding:18px;background:linear-gradient(#fff,#fbfbfb);box-shadow:0 18px 40px rgba(10,10,10,.06);text-align:center}
-    .logo-img{width:150px;height:auto;}
-    footer{padding:40px 8%;border-top:1px solid rgba(0,0,0,.04);color:rgba(0,0,0,.6)}
-    #gameContainer{display:none;text-align:center;margin-top:20px}
-    #gameCanvas{border:2px solid #000;border-radius:12px;display:block;margin:20px auto;background:#fefefe}
-    .game-controls{display:flex;justify-content:center;gap:10px;margin-top:20px}
-    #message{font-size:1.4rem;font-weight:700;margin-top:10px;min-height:30px}
-    #wordDisplay{font-size:1.6rem;font-weight:700;margin-top:10px;}
-    #score{font-size:1.2rem;font-weight:600;margin-top:10px;}
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: linear-gradient(180deg, #fdfdfd, #e6f0ff);
+      color: #222;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0059ff;
+      color: white;
+      padding: 20px;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    button {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #gameCanvas {
+      border: 3px solid #000;
+      background-color: #fff;
+      display: none;
+      margin-top: 20px;
+    }
+
+    #score {
+      font-size: 1.5rem;
+      margin-top: 10px;
+      color: #0059ff;
+    }
+
+    #messageBox {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 1rem;
+      color: #444;
+    }
+
+    a.button-link {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 10px;
+      display: inline-block;
+      transition: 0.3s;
+    }
+
+    a.button-link:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="app-icon">OT ZERO</div>
-      <div>
-        <h1>OT ZERO</h1>
-        <div style="font-size:.9rem;color:rgba(0,0,0,.55)">Juego para niños — Aprende español fácil</div>
-      </div>
-    </div>
-    <nav>
-      <a href="#inicio" class="active">Inicio</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#como">Cómo</a>
-      <a href="#juego">Juego</a>
-      <a href="#referencias">Referencias</a>
-    </nav>
-  </header>
+  <header>🎨 OT ZERO | Juego de Colores</header>
 
-  <main>
-    <section id="inicio" class="hero">
-      <div>
-        <div class="title">¡Hola, niños! Bienvenidos a OT ZERO</div>
-        <p class="tagline">Hoy vamos a aprender palabras en español. Mira, escucha y repite. ¡Será muy divertido!</p>
-        <div style="margin-top:16px;display:flex;gap:10px">
-          <button class="btn download" onclick="stopGame()">Descargar</button>
-          <button class="btn" onclick="showGame()">Jugar ahora</button>
-        </div>
-      </div>
-      <div class="screenshot">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Example.svg" alt="OT ZERO logo" class="logo-img" />
-      </div>
-    </section>
+  <div class="container">
+    <h2>¡Aprendamos los colores!</h2>
+    <p>Presiona <strong>“Jugar ahora”</strong> para comenzar el juego. ¡Atrapa el color correcto!</p>
 
-    <section id="sobre">
-      <h2>Acerca del juego</h2>
-      <p>Este juego te enseña palabras en español. Aprenderemos colores, animales y números. ¡Jugarás y aprenderás al mismo tiempo!</p>
-    </section>
+    <button id="startBtn">🎮 Jugar ahora</button>
+    <button id="stopBtn">⏹️ Descargar</button>
 
-    <section id="como">
-      <h2>Cómo jugamos</h2>
-      <p>Toca las imágenes y escucha las palabras. Repite conmigo: perro, gato, sol. Si lo haces bien, ¡ganas una estrella!</p>
-    </section>
+    <canvas id="gameCanvas" width="300" height="400"></canvas>
 
-    <section id="juego">
-      <h2>Juego interactivo</h2>
-      <div id="gameContainer">
-        <div id="wordDisplay">Color: rojo</div>
-        <div id="score">Puntuación: 0</div>
-        <canvas id="gameCanvas" width="500" height="300"></canvas>
-        <div id="message"></div>
-        <div class="game-controls">
-          <button class="btn" onclick="moveLeft()">← Izquierda</button>
-          <button class="btn" onclick="moveRight()">Derecha →</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="referencias">
-      <h2>Referencias</h2>
-      <p>Puedes mirar palabras aquí: <a href="https://www.spanishdict.com" target="_blank">SpanishDictionary.com</a></p>
-      <p style="color:rgba(0,0,0,.55)">*Nota:* Usa tus propias palabras y practica mucho. ¡Tú puedes!</p>
-    </section>
-  </main>
+    <div id="score">Puntaje: 0</div>
+    <div id="messageBox"></div>
+  </div>
 
   <footer>
-    <div style="display:flex;justify-content:space-between;flex-wrap:wrap">
-      <div>OT ZERO</div>
-      <div>App de práctica — Español fácil</div>
-    </div>
+    <a class="button-link" href="https://www.spanishdict.com/" target="_blank">Referencias</a>
   </footer>
 
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const scoreDisplay = document.getElementById('score');
+    const messageBox = document.getElementById('messageBox');
+
     const colors = [
-      {name:'rojo', code:'#ff4d4d'},
-      {name:'azul', code:'#4d79ff'},
-      {name:'verde', code:'#33cc33'},
-      {name:'amarillo', code:'#ffdb4d'}
+      { name: "rojo", code: "red" },
+      { name: "azul", code: "blue" },
+      { name: "verde", code: "green" },
+      { name: "amarillo", code: "yellow" }
     ];
 
-    let player = { x: 220, y: 250, size: 40, color: '#000' };
-    let fallingColor = { x: Math.random() * 460, y: 0, size: 40, color: colors[0].code, name:'rojo', speed: 2 };
-    let currentWord = colors[Math.floor(Math.random() * colors.length)];
-    let messageBox = document.getElementById('message');
-    let wordDisplay = document.getElementById('wordDisplay');
-    let scoreDisplay = document.getElementById('score');
-    let gameRunning = false;
+    let currentColor = {};
+    let fallingBox = null;
     let score = 0;
+    let gameRunning = false;
+    let interval;
 
-    function drawPlayer(){
-      ctx.fillStyle = player.color;
-      ctx.fillRect(player.x, player.y, player.size, player.size);
+    function startGame() {
+      canvas.style.display = "block";
+      messageBox.textContent = "";
+      score = 0;
+      scoreDisplay.textContent = "Puntaje: " + score;
+      gameRunning = true;
+      spawnBox();
+      interval = setInterval(updateGame, 50);
     }
 
-    function drawColorBox(){
-      ctx.fillStyle = fallingColor.color;
-      ctx.fillRect(fallingColor.x, fallingColor.y, fallingColor.size, fallingColor.size);
-    }
-
-    function drawGame(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      drawPlayer();
-      drawColorBox();
-    }
-
-    function moveLeft(){
-      player.x -= 20;
-      if(player.x < 0) player.x = 0;
-    }
-
-    function moveRight(){
-      player.x += 20;
-      if(player.x + player.size > canvas.width) player.x = canvas.width - player.size;
-    }
-
-    function updateGame(){
-      if(!gameRunning) return;
-      fallingColor.y += fallingColor.speed;
-      if(fallingColor.y + fallingColor.size > player.y && fallingColor.x + fallingColor.size > player.x && fallingColor.x < player.x + player.size){
-        if(fallingColor.name === currentWord.name){
-          score++;
-          messageBox.textContent = '¡Muy bien! 🌟';
-        } else {
-          messageBox.textContent = 'Intenta otra vez ❌';
-        }
-        scoreDisplay.textContent = 'Puntuación: ' + score;
-        resetColor();
-      }
-      if(fallingColor.y > canvas.height){
-        messageBox.textContent = 'Fallaste ❌';
-        resetColor();
-      }
-      drawGame();
-      requestAnimationFrame(updateGame);
-    }
-
-    function resetColor(){
-      const nextColor = colors[Math.floor(Math.random() * colors.length)];
-      fallingColor = { ...nextColor, x: Math.random() * 460, y: 0, size: 40, speed: 2 };
-      currentWord = colors[Math.floor(Math.random() * colors.length)];
-      wordDisplay.textContent = 'Color: ' + currentWord.name;
-    }
-
-    function showGame(){
-      window.scrollTo({top:document.getElementById('juego').offsetTop - 100, behavior:'smooth'});
-      document.getElementById('gameContainer').style.display = 'block';
-      drawGame();
-      if(!gameRunning){
-        gameRunning = true;
-        updateGame();
-      }
-    }
-
-    function stopGame(){
+    function stopGame() {
       gameRunning = false;
-      messageBox.textContent = '⛔ Juego detenido';
+      clearInterval(interval);
+      messageBox.textContent = "Juego detenido.";
     }
 
-    document.addEventListener('keydown', (e)=>{
-      if(e.key==='ArrowLeft') moveLeft();
-      if(e.key==='ArrowRight') moveRight();
-    });
+    function spawnBox() {
+      const random = colors[Math.floor(Math.random() * colors.length)];
+      currentColor = random;
+      fallingBox = { x: Math.random() * 250, y: 0, size: 50, color: random.code };
+      messageBox.textContent = "Color: " + currentColor.name;
+    }
+
+    function updateGame() {
+      if (!gameRunning) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = fallingBox.color;
+      ctx.fillRect(fallingBox.x, fallingBox.y, fallingBox.size, fallingBox.size);
+      fallingBox.y += 5;
+
+      if (fallingBox.y > canvas.height - 60) {
+        if (Math.random() < 0.5) {
+          score++;
+          scoreDisplay.textContent = "Puntaje: " + score;
+          messageBox.textContent = "¡Muy bien!";
+        } else {
+          messageBox.textContent = "❌ Intenta otra vez";
+        }
+        spawnBox();
+      }
+    }
+
+    startBtn.addEventListener("click", startGame);
+    stopBtn.addEventListener("click", stopGame);
   </script>
 </body>
 </html>
