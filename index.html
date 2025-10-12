@@ -27,6 +27,7 @@
     #gameContainer{display:none;text-align:center;margin-top:20px}
     #gameCanvas{border:2px solid #000;border-radius:12px;display:block;margin:20px auto;background:#fefefe}
     .game-controls{display:flex;justify-content:center;gap:10px;margin-top:20px}
+    #message{font-size:1.4rem;font-weight:700;margin-top:10px;color:#28a745;min-height:30px}
   </style>
 </head>
 <body>
@@ -76,6 +77,7 @@
       <h2>Juego interactivo</h2>
       <div id="gameContainer">
         <canvas id="gameCanvas" width="500" height="300"></canvas>
+        <div id="message"></div>
         <div class="game-controls">
           <button class="btn" onclick="moveLeft()">← Izquierda</button>
           <button class="btn" onclick="moveRight()">Derecha →</button>
@@ -101,30 +103,71 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     let player = { x: 220, y: 250, size: 40, color: '#007bff' };
+    let star = { x: Math.random() * 460, y: 0, size: 30, color: '#FFD700', speed: 2 };
+    let messageBox = document.getElementById('message');
+    let gameRunning = false;
 
     function drawPlayer(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.fillStyle = player.color;
       ctx.fillRect(player.x, player.y, player.size, player.size);
+    }
+
+    function drawStar(){
+      ctx.fillStyle = star.color;
+      ctx.beginPath();
+      ctx.arc(star.x + star.size/2, star.y + star.size/2, star.size/2, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    function drawGame(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      drawPlayer();
+      drawStar();
     }
 
     function moveLeft(){
       player.x -= 20;
       if(player.x < 0) player.x = 0;
-      drawPlayer();
     }
 
     function moveRight(){
       player.x += 20;
       if(player.x + player.size > canvas.width) player.x = canvas.width - player.size;
-      drawPlayer();
+    }
+
+    function updateGame(){
+      if(!gameRunning) return;
+      star.y += star.speed;
+      if(star.y + star.size > player.y && star.x + star.size > player.x && star.x < player.x + player.size){
+        messageBox.textContent = '¡Muy bien! 🌟';
+        resetStar();
+      }
+      if(star.y > canvas.height){
+        star.y = 0; star.x = Math.random() * 460;
+      }
+      drawGame();
+      requestAnimationFrame(updateGame);
+    }
+
+    function resetStar(){
+      star.y = 0;
+      star.x = Math.random() * 460;
     }
 
     function showGame(){
       window.scrollTo({top:document.getElementById('juego').offsetTop - 100, behavior:'smooth'});
       document.getElementById('gameContainer').style.display = 'block';
-      drawPlayer();
+      drawGame();
+      if(!gameRunning){
+        gameRunning = true;
+        updateGame();
+      }
     }
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowLeft') moveLeft();
+      if(e.key==='ArrowRight') moveRight();
+    });
   </script>
 </body>
 </html>
