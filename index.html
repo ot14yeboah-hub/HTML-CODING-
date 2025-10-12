@@ -1,259 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Página Personal</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OT ZERO — App Preview</title>
   <style>
-    /* ====== RESET ====== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* ---------- BASE / RESET ---------- */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5;color:#0a0a0a;background:#fff;transition:background .6s,color .6s}
+    a{color:inherit;text-decoration:none}
 
-    html {
-      scroll-behavior: smooth;
-    }
+    /* ---------- HEADER / NAV ---------- */
+    header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 8%;backdrop-filter:blur(8px);background:rgba(255,255,255,.6);z-index:120;border-bottom:1px solid rgba(0,0,0,.04)}
+    .brand{display:flex;gap:14px;align-items:center}
+    .app-icon{width:56px;height:56px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.6px;border:1px solid rgba(0,0,0,.06);box-shadow:0 6px 20px rgba(10,10,10,.06)}
+    header h1{font-size:1.1rem}
+    nav{display:flex;gap:20px}
+    nav a{font-weight:500;padding:8px 0;position:relative}
+    nav a.active::after{content:"";position:absolute;left:0;right:0;height:2px;bottom:-6px;background:currentColor;border-radius:2px}
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #ffffff;
-      color: #000000;
-      line-height: 1.6;
-      overflow-x: hidden;
-      transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1), color 0.8s ease;
-    }
+    /* ---------- HERO / APP PREVIEW ---------- */
+    main{padding-top:110px}
+    .hero{display:grid;grid-template-columns:360px 1fr;gap:40px;align-items:center;padding:56px 8%}
+    .hero-card{display:flex;flex-direction:column;gap:18px}
+    .badge{font-size:.85rem;color:rgba(0,0,0,.6);font-weight:600}
+    .title{font-size:2.2rem;font-weight:700}
+    .tagline{color:rgba(0,0,0,.7);max-width:760px}
+    .cta-row{display:flex;gap:12px;align-items:center}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:14px;border:1px solid rgba(0,0,0,.08);background:#fff;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(10,10,10,.05);transition:transform .18s}
+    .btn:hover{transform:translateY(-3px)}
+    .download{background:#000;color:#fff;border-color:transparent}
+    .screenshot{width:100%;max-width:420px;background:linear-gradient(#fff,#fbfbfb);border-radius:22px;padding:18px;border:1px solid rgba(0,0,0,.04);box-shadow:0 18px 40px rgba(10,10,10,.06)}
+    .phone-mock{width:100%;height:720px;border-radius:18px;background:linear-gradient(180deg,#fff,#f6f6f6);border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.5)}
 
-    /* ====== HEADER ====== */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 10%;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      transition: background-color 0.6s ease;
-    }
+    /* ---------- SECTIONS ---------- */
+    section{padding:72px 8%;min-height:420px;opacity:0;transform:translateY(36px) scale(.995);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    section.visible{opacity:1;transform:none}
+    section h2{font-size:1.6rem;margin-bottom:14px}
+    .cols{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
 
-    header h1 {
-      font-size: 1.4rem;
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
+    /* ---------- FEATURES / BADGES ---------- */
+    .feature{background:rgba(0,0,0,.02);padding:18px;border-radius:12px}
+    .feature h3{font-size:1.05rem;margin-bottom:8px}
 
-    nav a {
-      color: inherit;
-      margin-left: 25px;
-      text-decoration: none;
-      font-weight: 500;
-      position: relative;
-      transition: color 0.3s ease;
-    }
+    /* ---------- REFERENCES / FOOTER ---------- */
+    footer{padding:40px 8%;border-top:1px solid rgba(0,0,0,.04);color:rgba(0,0,0,.6)}
 
-    nav a::after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 2px;
-      left: 0;
-      bottom: -4px;
-      background-color: currentColor;
-      transition: width 0.3s ease;
-    }
+    /* ---------- DARK MODE ---------- */
+    body.dark{background:#000;color:#fff}
+    body.dark header{background:rgba(0,0,0,.5)}
+    body.dark .app-icon{background:#0a0a0a;color:#fff;border:1px solid rgba(255,255,255,.06)}
+    body.dark .download{background:#fff;color:#000}
+    body.dark .screenshot{background:linear-gradient(#0a0a0a,#0d0d0d)}
+    body.dark .phone-mock{color:rgba(255,255,255,.6);background:linear-gradient(180deg,#0d0d0d,#0a0a0a)}
 
-    nav a:hover::after {
-      width: 100%;
-    }
-
-    /* ====== DARK MODE TOGGLE ====== */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 52px;
-      height: 28px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      border-radius: 34px;
-      transition: background-color 0.5s ease;
-    }
-
-    .slider::before {
-      content: "";
-      position: absolute;
-      height: 22px;
-      width: 22px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: transform 0.5s ease;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: #007aff;
-    }
-
-    input:checked + .slider::before {
-      transform: translateX(24px);
-    }
-
-    .slider::after {
-      content: "🌙";
-      position: absolute;
-      right: 6px;
-      top: 3px;
-      font-size: 15px;
-      opacity: 0.8;
-      transition: opacity 0.5s ease;
-    }
-
-    input:checked + .slider::after {
-      content: "☀️";
-    }
-
-    /* ====== SECTIONS ====== */
-    section {
-      min-height: 100vh;
-      padding: 140px 10%;
-      opacity: 0;
-      transform: translateY(80px) scale(0.98);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    section.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      letter-spacing: -0.5px;
-    }
-
-    section p {
-      max-width: 700px;
-      font-size: 1.15rem;
-      opacity: 0.9;
-    }
-
-    /* ====== BUTTON STYLE ====== */
-    .btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 32px;
-      border: 1px solid currentColor;
-      border-radius: 50px;
-      text-decoration: none;
-      color: inherit;
-      font-weight: 500;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn:hover {
-      background-color: currentColor;
-      color: #ffffff;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    /* ====== DARK MODE ====== */
-    body.dark-mode {
-      background-color: #000000;
-      color: #ffffff;
-    }
-
-    body.dark-mode header {
-      background-color: rgba(0, 0, 0, 0.6);
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width:920px){
+      .hero{grid-template-columns:1fr;}
+      nav{display:none}
+      header{padding:12px 6%}
+      .app-icon{width:48px;height:48px}
     }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
   <header>
-    <h1>Mi Página Personal</h1>
-    <nav>
-      <a href="#inicio">Inicio</a>
-      <a href="#sobre-mi">Sobre mí</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#contacto">Contacto</a>
+    <div class="brand">
+      <div class="app-icon" id="appIcon">OT ZERO</div>
+      <div>
+        <h1>OT ZERO</h1>
+        <div style="font-size:.85rem;color:rgba(0,0,0,.55)">Juego educativo — Aprender español jugando</div>
+      </div>
+    </div>
+
+    <nav id="mainNav">
+      <a href="#inicio" class="active">Inicio</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#caracteristicas">Características</a>
       <a href="#referencias">Referencias</a>
     </nav>
 
-    <div class="switch">
-      <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
-      <label for="darkModeToggle" class="slider"></label>
+    <div style="display:flex;gap:12px;align-items:center">
+      <label class="switch" style="display:inline-flex;align-items:center;gap:8px">
+        <input id="darkToggle" type="checkbox" aria-label="Toggle dark mode" />
+        <span style="font-size:14px">🌙</span>
+      </label>
     </div>
   </header>
 
-  <!-- SECTIONS -->
-  <section id="inicio">
-    <h2>Bienvenido</h2>
-    <p>Hola, soy Othniel Yeboah. Esta es mi página, creada para practicar HTML y CSS.</p>
-    <a href="#sobre-mi" class="btn">Saber más</a>
-  </section>
+  <main>
+    <!-- HERO / APP PREVIEW -->
+    <section id="inicio" class="hero visible">
+      <div class="hero-card">
+        <div class="badge">Nuevo • OT ZERO</div>
+        <div class="title">OT ZERO — Juego para aprender español</div>
+        <p class="tagline">ESCRIBE AQUÍ TU BREVE TAGLINE EN ESPAÑOL (NO USES AI). Esta línea sirve como resumen corto que dirá por qué tu app es única. — *Llena con tu propia redacción.*</p>
 
-  <section id="sobre-mi">
-    <h2>Sobre mí</h2>
-    <p>Soy estudiante y me gusta el baloncesto y la tecnología. Me gusta crear proyectos como los sitios web más profesionales, como los de Apple.</p>
-  </section>
+        <div class="cta-row">
+          <button class="btn download">Descargar</button>
+          <button class="btn">Ver funciones</button>
+        </div>
 
-  <section id="proyectos">
-    <h2>Mis Proyectos</h2>
-    <p>Aquí presentaré desde sitios web personales hasta experiencias interactivas..</p>
-  </section>
+        <small style="color:rgba(0,0,0,.55);margin-top:8px">Versión de presentación — no funcional. Reemplaza el texto con tu propio español.</small>
+      </div>
 
-  <section id="contacto">
-    <h2>Contacto</h2>
-    <p>Puedes contactarme a través de mis redes sociales o correo electrónico. Gracias por visitar mi página personal.</p>
-    <a href="#inicio" class="btn">Volver arriba</a>
-  </section>
+      <div>
+        <div class="screenshot">
+          <div class="phone-mock">AQUÍ VA UNA IMAGEN / DEMO DE LA APP</div>
+        </div>
+      </div>
+    </section>
 
-  <!-- 🌐 REFERENCIAS SECTION -->
-  <section id="referencias">
-    <h2>Referencias</h2>
-    <p>Consulta palabras, traducciones y ejemplos en uno de los mejores diccionarios en línea para aprender español e inglés.</p>
-    <a href="https://www.spanishdict.com" target="_blank" class="btn">Ir a SpanishDictionary.com</a>
-  </section>
+    <!-- SOBRE LA APP -->
+    <section id="sobre">
+      <h2>Sobre la app</h2>
+      <p id="sobre-text">ESCRIBE AQUÍ TU DESCRIPCIÓN EN ESPAÑOL (NO USES AI). Explica la finalidad de la app, el público objetivo y por qué decidiste crearla. Mantén párrafos claros para la presentación oral.</p>
+    </section>
 
-  <!-- JAVASCRIPT -->
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona">
+      <h2>Cómo funciona</h2>
+      <div class="cols">
+        <div class="feature">
+          <h3>Modo juego</h3>
+          <p id="modo1">Describe brevemente (en español) cómo es la jugabilidad. Ej: preguntas por tiempo, puntos, rachas.</p>
+        </div>
+        <div class="feature">
+          <h3>Progreso y niveles</h3>
+          <p id="modo2">Describe el sistema de niveles y cómo los usuarios progresan.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARACTERÍSTICAS -->
+    <section id="caracteristicas">
+      <h2>Características principales</h2>
+      <div class="cols">
+        <div class="feature">
+          <h3>Lecciones rápidas</h3>
+          <p id="feat1">Explica cómo se usan las lecciones rápidas para aprender vocabulario.</p>
+        </div>
+        <div class="feature">
+          <h3>Retroalimentación inmediata</h3>
+          <p id="feat2">Cuenta cómo la app da feedback y correcciones.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERENCIAS -->
+    <section id="referencias">
+      <h2>Referencias</h2>
+      <p>Usa fuentes confiables y cita todo contenido que no sea tuyo. Tu profesora revisará esto. Aquí hay un enlace recomendado:</p>
+      <p><a href="https://www.spanishdict.com" target="_blank" rel="noopener noreferrer">SpanishDictionary.com</a></p>
+      <p style="color:rgba(0,0,0,.55)">*NOTA:* Recuerda no usar traducción automática para generar tu texto. Escribe tu propia redacción en español.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="font-weight:600">OT ZERO</div>
+      <div style="color:rgba(0,0,0,.6)">Diseño de presentación — Llena los textos en español tú mismo.</div>
+    </div>
+  </footer>
+
   <script>
-    // 🌗 Toggle Dark Mode
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
+    // Dark mode with localStorage
+    const darkToggle = document.getElementById('darkToggle');
+    const root = document.body;
+    function setTheme(dark){
+      root.classList.toggle('dark', !!dark);
+      darkToggle.checked = !!dark;
+      localStorage.setItem('ot_theme', dark? 'dark':'light');
     }
+    darkToggle.addEventListener('change',()=>setTheme(darkToggle.checked));
+    // init
+    setTheme(localStorage.getItem('ot_theme') === 'dark');
 
-    // 🕊️ Smooth Section Fade-in on Scroll (Apple-style)
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
+    // Intersection observer for sections
+    const sections = document.querySelectorAll('main section');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); })
+    },{threshold:.18});
+    sections.forEach(s=>io.observe(s));
+
+    // Active nav link on scroll
+    const navLinks = document.querySelectorAll('nav a');
+    function updateActive(){
+      let cur = 'inicio';
+      sections.forEach(s=>{
+        const top = s.getBoundingClientRect().top;
+        if(top <= 140) cur = s.id;
       });
-    }, { threshold: 0.2 });
+      navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+    }
+    window.addEventListener('scroll', updateActive);
+    updateActive();
 
-    sections.forEach(section => observer.observe(section));
+    // Accessibility notes: make sure when you replace text you keep semantic elements
   </script>
 </body>
 </html>
